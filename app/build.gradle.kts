@@ -22,6 +22,11 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -30,10 +35,10 @@ android {
                 "proguard-rules.pro"
             )
         }
-        debug {
-            manifestPlaceholders.usesCleartextTraffic = true
-            buildConfigField "String", "BASE_URL", '"http://10.0.2.2:9999"'
-        }
+//        debug {
+//            manifestPlaceholders.usesCleartextTraffic = true
+//            buildConfigField "String", "BASE_URL", '"http://10.0.2.2:9999"'
+//        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -45,6 +50,8 @@ android {
 }
 
 dependencies {
+    implementation platform("com.google.firebase:firebase-bom:32.7.1")
+    implementation ("com.google.firebase:firebase-analytics")
     implementation ("androidx.recyclerview:recyclerview:1.3.2")
     implementation ("androidx.activity:activity-ktx:1.8.2")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NeWork</string>
+    <string name="description_post_author_avatar">Аватар автора поста</string>
+    <string name="menu">Меню</string>
+    <string name="posts">Посты</string>
+    <string name="events">События</string>
+    <string name="google_play_unavailable">Google Api Недоступно</string>
+    <string name="users">Пользователи</string>
+</resources>

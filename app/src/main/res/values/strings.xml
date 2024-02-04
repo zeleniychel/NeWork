@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">NeWork</string>
+    <string name="description_post_author_avatar">Post author avatar</string>
+    <string name="menu">Menu</string>
+    <string name="posts">Posts</string>
+    <string name="events">Events</string>
+    <string name="google_play_unavailable">Google Api Unavailable</string>
+    <string name="users">Users</string>
+</resources>

@@ -7,4 +7,21 @@
     <string name="events">События</string>
     <string name="google_play_unavailable">Google Api Недоступно</string>
     <string name="users">Пользователи</string>
+    <string name="login">Вход</string>
+    <string name="don_t_have_an_account_register">У вас нет аккаунта? Зарегестрируйтесь</string>
+    <string name="attachment">Вложение</string>
+    <string name="remove">Убрать</string>
+    <string name="offline">Оффлайн</string>
+    <string name="online">Онлайн</string>
+    <string name="type">Тип</string>
+    <string name="date">Дата</string>
+    <string name="photo">Photo</string>
+    <string name="geolocation">Geolocation</string>
+    <string name="addspeakersbutton">addSpeakersButton</string>
+    <string name="play">play\n</string>
+    <string name="create">Create</string>
+    <string name="loginauth">Login</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="avatar" />
 </resources>

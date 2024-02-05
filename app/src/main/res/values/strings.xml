@@ -6,4 +6,21 @@
     <string name="events">Events</string>
     <string name="google_play_unavailable">Google Api Unavailable</string>
     <string name="users">Users</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account_register">Don\'t have an account? Register</string>
+    <string name="attachment">Attachment</string>
+    <string name="remove">Remove</string>
+    <string name="offline">Offline</string>
+    <string name="online">Online</string>
+    <string name="type">Type</string>
+    <string name="date">Date</string>
+    <string name="photo">Photo</string>
+    <string name="geolocation">Geolocation</string>
+    <string name="addspeakersbutton">addSpeakersButton</string>
+    <string name="play">play\n</string>
+    <string name="create">Create</string>
+    <string name="loginauth">Login</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="avatar" />
 </resources>

@@ -135,6 +135,14 @@
             android:background="@android:color/transparent"
             android:contentDescription="@string/geolocation"
             android:src="@drawable/ic_location_pin_24" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/addspeakersbutton"
+            android:src="@drawable/ic_plus_24" />
     </com.google.android.material.bottomappbar.BottomAppBar>
 
 

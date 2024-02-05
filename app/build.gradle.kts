@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace = "ru.netology.nework"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "ru.netology.nework"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -35,10 +35,11 @@ android {
                 "proguard-rules.pro"
             )
         }
-//        debug {
-//            manifestPlaceholders.usesCleartextTraffic = true
-//            buildConfigField "String", "BASE_URL", '"http://10.0.2.2:9999"'
-//        }
+
+        debug {
+            manifestPlaceholders["usesCleartextTraffic"] = true
+            buildConfigField("String", "BASE_URL", "\"http://94.228.125.136:8080\"")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -50,7 +51,7 @@ android {
 }
 
 dependencies {
-    implementation platform("com.google.firebase:firebase-bom:32.7.1")
+    implementation (platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation ("com.google.firebase:firebase-analytics")
     implementation ("androidx.recyclerview:recyclerview:1.3.2")
     implementation ("androidx.activity:activity-ktx:1.8.2")

@@ -9,6 +9,7 @@
     android:layout_marginEnd="8dp"
     android:background="@drawable/border">
 
+
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="40dp"
@@ -60,6 +61,32 @@
         app:layout_constraintTop_toBottomOf="@id/author"
         tools:text="11.05.22 11:21" />
 
+    <TextView
+        android:id="@+id/eventType"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#1D1B20"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/eventDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrierAttachment"
+
+        tools:text="Online" />
+
+    <TextView
+        android:id="@+id/eventDate"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/content"
+        app:layout_constraintStart_toStartOf="parent"
+
+        tools:text="11.05.22 11:21" />
+
 
     <TextView
         android:id="@+id/content"
@@ -70,7 +97,6 @@
         app:layout_constraintBottom_toTopOf="@id/barrierContent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/barrierAttachment"
         tools:text="Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
 
 
@@ -110,20 +136,17 @@
         android:id="@+id/audioAttachment"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/attachment"
         android:src="@drawable/ic_play_circle_filled_24"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/barrierAttachment"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/barrier" />
+        app:layout_constraintTop_toTopOf="@id/eventType" />
 
     <VideoView
         android:id="@+id/videoAttachment"
         android:layout_width="wrap_content"
         android:layout_height="300dp"
-        android:contentDescription="@string/attachment"
         app:layout_constraintBottom_toTopOf="@id/barrierAttachment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

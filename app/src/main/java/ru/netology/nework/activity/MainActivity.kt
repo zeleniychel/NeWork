@@ -2,6 +2,7 @@ package ru.netology.nework.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+
 import ru.netology.nework.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

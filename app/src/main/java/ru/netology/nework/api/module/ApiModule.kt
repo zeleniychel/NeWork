@@ -9,6 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import ru.netology.nework.BuildConfig
 import ru.netology.nework.api.CommentsApi
 import ru.netology.nework.api.EventsApi
 import ru.netology.nework.api.JobsApi
@@ -26,7 +27,7 @@ import javax.inject.Singleton
 class ApiModule {
 
     companion object {
-        private const val BASE_URL = "${BuildConfig.BASE_URL}/api/slow/"
+        private const val BASE_URL = "${BuildConfig.BASE_URL}/api/"
     }
 
     @Singleton

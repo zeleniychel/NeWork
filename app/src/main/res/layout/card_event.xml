@@ -139,7 +139,7 @@
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/attachment"
         android:src="@drawable/ic_play_circle_filled_24"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/eventType" />
 

@@ -2,10 +2,21 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_main"
-    app:startDestination="@id/postFeedFragment">
-
+    app:startDestination="@id/postsFeedFragment">
     <fragment
-        android:id="@+id/postFeedFragment"
-        android:name="ru.netology.nework.activity.module.PostFeedFragment"
-        android:label="PostFeedFragment" />
+        android:id="@+id/postsFeedFragment"
+        android:name="ru.netology.nework.activity.PostsFeedFragment"
+        android:label="PostsFeedFragment" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="ru.netology.nework.activity.SignInFragment"
+        android:label="SignInFragment" >
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="ru.netology.nework.activity.SignUpFragment"
+        android:label="SignUpFragment" />
 </navigation>

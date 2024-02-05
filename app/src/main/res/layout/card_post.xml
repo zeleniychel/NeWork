@@ -29,6 +29,7 @@
         android:contentDescription="@string/menu"
         android:focusable="true"
         android:src="@drawable/ic_more_24"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/barrier"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

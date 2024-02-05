@@ -15,5 +15,6 @@ data class Post(
     val likeOwnerIds: List<Long>,
     val likeByMe: Boolean,
     val attachment: Attachment,
-    val users: UserPreview
+    val users: UserPreview,
+    val ownedByMe:Boolean = false
 )

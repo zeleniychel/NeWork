@@ -19,9 +19,18 @@
     <string name="geolocation">Geolocation</string>
     <string name="addspeakersbutton">addSpeakersButton</string>
     <string name="play">play\n</string>
-    <string name="create">Create</string>
-    <string name="loginauth">Login</string>
-    <string name="password">Password</string>
+    <string name="create">Создать</string>
+    <string name="loginauth">Логин</string>
+    <string name="password">Пароль</string>
     <string name="name">Name</string>
-    <string name="avatar" />
+    <string name="avatar" >Аватар</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_up">Зарегестрироваться</string>
+    <string name="emptyloginfield">Логин неможет быть пустым</string>
+    <string name="emptypassfield">Пароль не может быть пустым</string>
+    <string name="menu_remove">Remove</string>
+    <string name="menu_edit">Edit</string>
+    <string name="emptynamefield">Password cannot be empty</string>
+    <string name="passdontmatch">Passwords don\'t match</string>
+    <string name="accaunt">Accaunt</string>
 </resources>

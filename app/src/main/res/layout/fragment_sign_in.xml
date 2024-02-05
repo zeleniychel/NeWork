@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            app:errorEnabled="true"
             android:backgroundTint="#E6E0E9"
             android:hint="@string/loginauth">
 
@@ -33,6 +34,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:backgroundTint="#E6E0E9"
+            app:errorEnabled="true"
             android:hint="@string/password"
             app:endIconMode="password_toggle">
 
@@ -54,6 +56,7 @@
             android:id="@+id/registerText"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
+            android:clickable="true"
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:text="@string/don_t_have_an_account_register"
@@ -61,7 +64,8 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/signInButton"
             app:layout_constraintStart_toStartOf="@id/signInButton"
-            app:layout_constraintTop_toBottomOf="@id/signInButton" />
+            app:layout_constraintTop_toBottomOf="@id/signInButton"
+            android:focusable="true" />
     </LinearLayout>
 
 

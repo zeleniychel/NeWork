@@ -22,5 +22,14 @@
     <string name="loginauth">Login</string>
     <string name="password">Password</string>
     <string name="name">Name</string>
-    <string name="avatar" />
+    <string name="avatar" >Avatar</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="emptyloginfield">Login cannot be empty</string>
+    <string name="emptypassfield">Password cannot be empty</string>
+    <string name="menu_remove">Remove</string>
+    <string name="menu_edit">Edit</string>
+    <string name="emptynamefield">Password cannot be empty</string>
+    <string name="passdontmatch">Passwords don\'t match</string>
+    <string name="accaunt">Accaunt</string>
 </resources>

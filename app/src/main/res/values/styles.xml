@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.AppTheme.AppBar" parent="Widget.MaterialComponents.Toolbar.Primary">
+    <style name="Widget.AppTheme.CustomAppBar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:background">#FEF7FF</item>
         <item name="titleTextColor">#1D1B20</item>
         <item name="subtitleTextColor">@color/material_on_primary_emphasis_medium</item>

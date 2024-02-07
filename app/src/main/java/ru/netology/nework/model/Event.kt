@@ -18,5 +18,6 @@ data class Event(
     val participantsByMe: Boolean,
     val attachment: Attachment,
     val link: String,
-    val users: UserPreview
+    val users: UserPreview,
+    val ownedByMe: Boolean = false
 )

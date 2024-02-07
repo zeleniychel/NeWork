@@ -12,7 +12,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/card_user" />
+        tools:listitem="@layout/card_user_preview" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

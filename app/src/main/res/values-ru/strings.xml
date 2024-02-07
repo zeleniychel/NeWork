@@ -33,4 +33,12 @@
     <string name="emptynamefield">Password cannot be empty</string>
     <string name="passdontmatch">Passwords don\'t match</string>
     <string name="accaunt">Accaunt</string>
+    <string name="wall">Wall</string>
+    <string name="jobs">Jobs</string>
+    <string name="company">Company</string>
+    <string name="position">Position</string>
+    <string name="link">Link</string>
+    <string name="select_date">Select Date</string>
+    <string name="user_name_login">User name/login</string>
+    <string name="registration">Registration</string>
 </resources>

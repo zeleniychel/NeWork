@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.netology.nework.adapter.OnInteractionListener
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import ru.netology.nework.R
+import ru.netology.nework.adapter.OnPostInteractionListener
 import ru.netology.nework.adapter.PostsFeedAdapter
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentPostsFeedBinding
@@ -23,10 +26,11 @@ class PostsFeedFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+
         val binding = FragmentPostsFeedBinding.inflate(layoutInflater)
 
 
-        val adapter = PostsFeedAdapter(object : OnInteractionListener {
+        val adapter = PostsFeedAdapter(object : OnPostInteractionListener {
             override fun onEdit(post: Post) {
             }
 
@@ -42,6 +46,10 @@ class PostsFeedFragment: Fragment() {
             override fun onShare(post: Post) {
             }
         })
+
+        binding.fab.setOnClickListener{
+            findNavController().navigate(R.id.action_postsFeedFragment_to_newPostFragment)
+        }
 
 
 

@@ -35,7 +35,7 @@
         tools:text="Lydia Westervelt" />
 
     <TextView
-        android:id="@+id/published"
+        android:id="@+id/userLogin"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_marginStart="16dp"

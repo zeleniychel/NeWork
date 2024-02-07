@@ -6,7 +6,11 @@
     <fragment
         android:id="@+id/postsFeedFragment"
         android:name="ru.netology.nework.activity.PostsFeedFragment"
-        android:label="PostsFeedFragment" />
+        android:label="PostsFeedFragment" >
+        <action
+            android:id="@+id/action_postsFeedFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signInFragment"
         android:name="ru.netology.nework.activity.SignInFragment"
@@ -19,4 +23,40 @@
         android:id="@+id/signUpFragment"
         android:name="ru.netology.nework.activity.SignUpFragment"
         android:label="SignUpFragment" />
+    <fragment
+        android:id="@+id/eventsFeedFragment"
+        android:name="ru.netology.nework.activity.EventsFeedFragment"
+        android:label="EventsFeedFragment" >
+        <action
+            android:id="@+id/action_eventsFeedFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/usersFeedFragment"
+        android:name="ru.netology.nework.activity.UsersFeedFragment"
+        android:label="UsersFeedFragment" >
+        <action
+            android:id="@+id/action_usersFeedFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/jobEditFragment"
+        android:name="ru.netology.nework.activity.JobEditFragment"
+        android:label="JobEditFragment" />
+    <fragment
+        android:id="@+id/newEventFragment"
+        android:name="ru.netology.nework.activity.NewEventFragment"
+        android:label="NewEventFragment" />
+    <fragment
+        android:id="@+id/newPostFragment"
+        android:name="ru.netology.nework.activity.NewPostFragment"
+        android:label="NewPostFragment" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="ru.netology.nework.activity.UserFragment"
+        android:label="UserFragment" >
+        <action
+            android:id="@+id/action_userFragment_to_jobEditFragment"
+            app:destination="@id/jobEditFragment" />
+    </fragment>
 </navigation>

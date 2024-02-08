@@ -15,13 +15,21 @@ import ru.netology.nework.util.Converter
 import ru.netology.nework.util.load
 import ru.netology.nework.util.loadAttachment
 
+interface OnInteractionListener {
+    fun onLike(post: Post) {}
+    fun onShare(post: Post) {}
+    fun onPost(post: Post) {}
+    fun onRemove(post: Post) {}
+    fun onEdit(post: Post) {}
+}
+
 class PostsFeedAdapter(
-    private val onPostInteractionListener: OnPostInteractionListener
+    private val onInteractionListener: OnInteractionListener
 ) : androidx.recyclerview.widget.ListAdapter<Post, PostViewHolder>(PostDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context))
-        return PostViewHolder(binding, onPostInteractionListener)
+        return PostViewHolder(binding, onInteractionListener)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -32,7 +40,7 @@ class PostsFeedAdapter(
 
 class PostViewHolder(
     private val binding: CardPostBinding,
-    private val onPostInteractionListener: OnPostInteractionListener,
+    private val onInteractionListener: OnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(post: Post) {
@@ -42,7 +50,7 @@ class PostViewHolder(
             content.text = post.content
             likes.isChecked = post.likeByMe
             likes.text = Converter.convertNumber(post.likeOwnerIds.size)
-            avatar.load("${BuildConfig.BASE_URL}/api/users/${post.authorId}/avatar")
+            avatar.load("${BuildConfig.BASE_URL}/api/posts/${post.id}/${post.authorAvatar}")
             imageAttachment.loadAttachment("${BuildConfig.BASE_URL}/api/posts/${post.id}/attachment")
             when (post.attachment.type){
                 AttachmentType.IMAGE -> {
@@ -63,11 +71,11 @@ class PostViewHolder(
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
                             R.id.remove -> {
-                                onPostInteractionListener.onRemove(post)
+                                onInteractionListener.onRemove(post)
                                 true
                             }
                             R.id.edit -> {
-                                onPostInteractionListener.onEdit(post)
+                                onInteractionListener.onEdit(post)
                                 true
                             }
                             else -> false
@@ -78,13 +86,13 @@ class PostViewHolder(
 
 
             likes.setOnClickListener {
-                onPostInteractionListener.onLike(post)
+                onInteractionListener.onLike(post)
             }
             share.setOnClickListener {
-                onPostInteractionListener.onShare(post)
+                onInteractionListener.onShare(post)
             }
             root.setOnClickListener {
-                onPostInteractionListener.onPost(post)
+                onInteractionListener.onPost(post)
             }
         }
     }

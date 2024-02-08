@@ -3,15 +3,11 @@ package ru.netology.nework.activity
 import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
-import androidx.core.view.MenuProvider
 import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -49,9 +45,6 @@ class SignUpFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        (activity as MainActivity).supportActionBar?.title = getString(R.string.registration)
-
 
         val binding = FragmentSignUpBinding.inflate(layoutInflater)
 
@@ -102,26 +95,26 @@ class SignUpFragment : Fragment() {
 
             AndroidUtils.hideKeyboard(requireView())
 
-            val photoModel = viewModel.photo.value
-            if (photoModel != null) {
-                viewModel.registerUserWithAvatar(
+            if (viewModel.photo.value == null){
+                viewModel.registerUserWithoutAvatar(
                     binding.loginField.toString(),
                     binding.repeatPassField.toString(),
-                    binding.nameField.toString(),
-                    photoModel
+                    binding.nameField.toString()
                 )
-            } else {
+            }else {
                 viewModel.registerUser(
                     binding.loginField.toString(),
                     binding.repeatPassField.toString(),
-                    binding.nameField.toString())
+                    binding.nameField.toString(),
+                    viewModel.photo.value!!
+                )
             }
-        }
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.authentication.collectLatest {
-                    if (it) findNavController().navigateUp()
+            lifecycleScope.launch {
+                lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                    viewModel.authentication.collectLatest {
+                        if (it) findNavController().navigateUp()
+                    }
                 }
             }
         }

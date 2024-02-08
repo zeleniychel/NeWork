@@ -2,13 +2,9 @@ package ru.netology.nework.activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.MenuProvider
 import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -35,9 +31,6 @@ class SignInFragment : Fragment() {
     ): View {
 
         val binding = FragmentSignInBinding.inflate(layoutInflater)
-
-        (activity as MainActivity).supportActionBar?.title = getString(R.string.login)
-
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {

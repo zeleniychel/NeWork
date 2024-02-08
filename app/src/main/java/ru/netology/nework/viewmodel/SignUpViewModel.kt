@@ -37,10 +37,10 @@ class SignUpViewModel @Inject constructor(
         _photo.value = PhotoModel(uri, file)
     }
 
-    fun registerUser(login: String, password: String, name: String) =
+    fun registerUser(login: String, password: String, name: String, photoModel: PhotoModel) =
         viewModelScope.launch {
             try {
-                val user = repository.registerUser(login, password, name)
+                val user = repository.registerUser(login, password, name, photoModel.file!!)
                 user.token?.let { appAuth.setAuth(user.id, it) }
                 _authentication.value = appAuth.authStateFlow.value.id != 0L
             } catch (e: Exception) {
@@ -60,10 +60,10 @@ class SignUpViewModel @Inject constructor(
             }
         }
 
-    fun registerUserWithAvatar(login: String, password: String, name: String, photoModel: PhotoModel) =
+    fun registerUserWithoutAvatar(login: String, password: String, name: String) =
         viewModelScope.launch {
             try {
-                val user = repository.registerUserWithAvatar(login, password, name, photoModel.file!!)
+                val user = repository.registerUserWithoutAvatar(login, password, name)
                 user.token?.let { appAuth.setAuth(user.id, it) }
                 _authentication.value = appAuth.authStateFlow.value.id != 0L
             } catch (e: Exception) {

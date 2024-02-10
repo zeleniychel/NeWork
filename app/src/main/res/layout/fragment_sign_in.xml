@@ -51,6 +51,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/signInButton"
             android:layout_width="match_parent"
+            android:backgroundTint="@color/purple"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/login" />
@@ -64,7 +65,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="@string/don_t_have_an_account_register"
-            android:textColor="#6750A4"
+            android:textColor="@color/purple"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/signInButton"
             app:layout_constraintStart_toStartOf="@id/signInButton"

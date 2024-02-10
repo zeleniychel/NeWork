@@ -1,4 +1,4 @@
-package ru.netology.nework.api
+package ru.netology.nework.model
 
 sealed interface FeedItem {
     val id:Long

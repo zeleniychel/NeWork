@@ -5,7 +5,7 @@ data class Comment(
     val postId: Long,
     val authorId: Long,
     val author: String,
-    val authorAvatar: String,
+    val authorAvatar: String?,
     val content: String,
     val published: String,
     val likeOwnerIds: List<Long>

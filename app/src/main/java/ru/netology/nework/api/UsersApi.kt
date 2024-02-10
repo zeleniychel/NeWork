@@ -24,19 +24,12 @@ interface UsersApi {
 
 
     @Multipart
-    @POST("/users/registration")
+    @POST("users/registration")
     suspend fun registerUser(
         @Query("login") login: String,
         @Query("pass") pass: String,
         @Query("name") name: String,
         @Part file: MultipartBody.Part
-    ): Response<Token>
-
-    @POST("/users/registration")
-    suspend fun registerUserWithoutAvatar(
-        @Query("login") login: String,
-        @Query("pass") pass: String,
-        @Query("name") name: String
     ): Response<Token>
 
     @FormUrlEncoded

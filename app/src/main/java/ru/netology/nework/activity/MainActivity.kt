@@ -5,35 +5,33 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.MenuProvider
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
-
 import ru.netology.nework.databinding.ActivityMainBinding
 import ru.netology.nework.viewmodel.AuthViewModel
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var bottomNavigationView: BottomNavigationView
     val viewModel by viewModels<AuthViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
-        bottomNavigationView = findViewById(R.id.bottomNavMenu)
-
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
-        val navController = navHostFragment.navController
-
-        bottomNavigationView.setupWithNavController(navController)
-
         setSupportActionBar(binding.topAppBar)
+
+        binding.bottomNavMenu.setOnItemSelectedListener {
+            when(it.itemId){
+                R.id.users -> findNavController(R.id.container).navigate(R.id.usersFeedFragment)
+            }
+            true
+        }
 
         addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -47,12 +45,12 @@ class MainActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.signin -> {
-                        navController.navigate(R.id.signInFragment)
+                        findNavController(R.id.container).navigate(R.id.signInFragment)
                         true
                     }
 
                     R.id.signup -> {
-                        navController.navigate(R.id.signUpFragment)
+                        findNavController(R.id.container).navigate(R.id.signUpFragment)
                         true
                     }
 
@@ -60,5 +58,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+    override fun onResume() {
+        super.onResume()
     }
 }

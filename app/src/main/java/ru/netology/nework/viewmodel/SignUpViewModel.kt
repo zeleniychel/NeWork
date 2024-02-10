@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -34,36 +35,13 @@ class SignUpViewModel @Inject constructor(
 
 
     fun setPhoto(uri: Uri?, file: File?) {
-        _photo.value = PhotoModel(uri, file)
+        _photo.postValue(PhotoModel(uri, file))
     }
 
-    fun registerUser(login: String, password: String, name: String, photoModel: PhotoModel) =
+    fun registerUser(login: String, password: String, name: String, photoModel: PhotoModel?) =
         viewModelScope.launch {
             try {
-                val user = repository.registerUser(login, password, name, photoModel.file!!)
-                user.token?.let { appAuth.setAuth(user.id, it) }
-                _authentication.value = appAuth.authStateFlow.value.id != 0L
-            } catch (e: Exception) {
-                when (e) {
-                    is IOException -> {
-                        _errorMessage.value = "Network error"
-                    }
-
-                    is ApiError -> {
-                        _errorMessage.value = "Api error"
-                    }
-
-                    else -> {
-                        _errorMessage.value = "Unknown error"
-                    }
-                }
-            }
-        }
-
-    fun registerUserWithoutAvatar(login: String, password: String, name: String) =
-        viewModelScope.launch {
-            try {
-                val user = repository.registerUserWithoutAvatar(login, password, name)
+                val user = repository.registerUser(login, password, name, photoModel?.file)
                 user.token?.let { appAuth.setAuth(user.id, it) }
                 _authentication.value = appAuth.authStateFlow.value.id != 0L
             } catch (e: Exception) {

@@ -7,7 +7,6 @@ import java.io.File
 interface UserRepository {
     suspend fun getUsers(): List<UserResponse>
     suspend fun getUserById(id: Long): UserResponse
-    suspend fun registerUser(login: String, pass: String, name: String, avatar: File): Token
-    suspend fun registerUserWithoutAvatar(login: String, pass: String, name: String): Token
+    suspend fun registerUser(login: String, pass: String, name: String, avatar: File?): Token
     suspend fun updateUser(login: String, pass: String): Token
 }

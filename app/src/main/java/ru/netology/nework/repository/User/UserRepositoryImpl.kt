@@ -1,7 +1,10 @@
 package ru.netology.nework.repository.User
 
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.nework.api.UsersApi
 import ru.netology.nework.error.ApiError
 import ru.netology.nework.error.NetworkError
@@ -48,16 +51,28 @@ class UserRepositoryImpl @Inject constructor(
         login: String,
         pass: String,
         name: String,
-        avatar: File
+        avatar: File?
     ): Token {
         try {
-            val part =
-                MultipartBody.Part.createFormData("file", avatar.name, avatar.asRequestBody())
-            val response = api.registerUser(login, pass, name, part)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
+            if (avatar == null){
+                val emptyRequestBody: RequestBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val part: MultipartBody.Part = MultipartBody.Part.createFormData("empty_part", "", emptyRequestBody)
+                val response = api.registerUser(login, pass, name,part)
+                if (!response.isSuccessful) {
+                    throw ApiError(response.code(), response.message())
+                }
+                return response.body() ?: throw ApiError(response.code(), response.message())
+
+            } else{
+                val part =
+                    MultipartBody.Part.createFormData("file", avatar.name, avatar.asRequestBody())
+                val response = api.registerUser(login, pass, name, part)
+                if (!response.isSuccessful) {
+                    throw ApiError(response.code(), response.message())
+                }
+                return response.body() ?: throw ApiError(response.code(), response.message())
             }
-            return response.body() ?: throw ApiError(response.code(), response.message())
+
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -65,22 +80,6 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun registerUserWithoutAvatar(
-        login: String,
-        pass: String,
-        name: String,
-    ): Token {try {
-        val response = api.registerUserWithoutAvatar(login, pass, name)
-        if (!response.isSuccessful) {
-            throw ApiError(response.code(), response.message())
-        }
-        return response.body() ?: throw ApiError(response.code(), response.message())
-    } catch (e: IOException) {
-        throw NetworkError
-    } catch (e: Exception) {
-        throw UnknownError
-    }
-    }
 
     override suspend fun updateUser(login: String, pass: String): Token {
         try {

@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.nework.R
@@ -20,6 +21,7 @@ import ru.netology.nework.databinding.FragmentSignInBinding
 import ru.netology.nework.util.AndroidUtils
 import ru.netology.nework.viewmodel.SignInViewModel
 
+@AndroidEntryPoint
 class SignInFragment : Fragment() {
 
     private val viewModel by viewModels<SignInViewModel>()
@@ -41,19 +43,19 @@ class SignInFragment : Fragment() {
         )
 
         binding.signInButton.setOnClickListener {
-            if (binding.loginField.isEmpty()) {
+            if (binding.loginField.text.toString().isEmpty()) {
                 binding.loginField.error = getString(R.string.emptyloginfield)
                 return@setOnClickListener
             }
 
-            if (binding.passField.isEmpty()) {
+            if (binding.passField.text.toString().isEmpty()) {
                 binding.passField.error = getString(R.string.emptypassfield)
                 return@setOnClickListener
             }
             AndroidUtils.hideKeyboard(requireView())
             viewModel.updateUser(
-                binding.loginField.toString(),
-                binding.passField.toString()
+                binding.loginField.text.toString(),
+                binding.passField.text.toString()
             )
             lifecycleScope.launch {
                 lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {

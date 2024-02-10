@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.adapter.OnInteractionListener
 import ru.netology.nework.adapter.PostsFeedAdapter
 import ru.netology.nework.auth.AppAuth
@@ -12,6 +13,7 @@ import ru.netology.nework.databinding.FragmentPostsFeedBinding
 import ru.netology.nework.model.Post
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class PostsFeedFragment: Fragment() {
 
     @Inject

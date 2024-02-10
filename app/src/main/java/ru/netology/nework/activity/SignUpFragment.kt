@@ -30,14 +30,6 @@ import ru.netology.nework.viewmodel.SignUpViewModel
 class SignUpFragment : Fragment() {
 
     private val viewModel by viewModels<SignUpViewModel>()
-    private val photoResultContract =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val uri = it.data?.data ?: return@registerForActivityResult
-                val file = uri.toFile()
-                viewModel.setPhoto(uri, file)
-            }
-        }
 
 
     override fun onCreateView(
@@ -47,6 +39,15 @@ class SignUpFragment : Fragment() {
     ): View {
 
         val binding = FragmentSignUpBinding.inflate(layoutInflater)
+
+        val photoResultContract =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == Activity.RESULT_OK) {
+                    val uri = it.data?.data ?: return@registerForActivityResult
+                    val file = uri.toFile()
+                    viewModel.setPhoto(uri, file)
+                }
+            }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -62,52 +63,39 @@ class SignUpFragment : Fragment() {
                 .galleryOnly()
                 .maxResultSize(2048, 2048)
                 .createIntent(photoResultContract::launch)
+        }
 
-            binding.avatar.setImageURI(viewModel.photo.value?.uri)
+        viewModel.photo.observe(viewLifecycleOwner){
+            binding.avatar.apply {
+                setImageURI(viewModel.photo.value?.uri)
+            }
         }
 
 
         binding.signUpButton.setOnClickListener {
-            if (binding.loginField.isEmpty()) {
+
+            if (binding.loginField.text == null) {
                 binding.loginField.error = getString(R.string.emptyloginfield)
                 return@setOnClickListener
             }
+            if (binding.nameField.text == null) {
+                binding.nameField.error = getString(R.string.emptypassfield)
+                return@setOnClickListener
+            }
 
-            if (binding.passField.isEmpty()) {
+            if (binding.passField.text == null) {
                 binding.passField.error = getString(R.string.emptypassfield)
-                return@setOnClickListener
-            }
-
-            if (binding.repeatPassField.isEmpty()) {
-                binding.repeatPassField.error = getString(R.string.emptypassfield)
-                return@setOnClickListener
-            }
-
-            if (binding.nameField.isEmpty()) {
-                binding.nameField.error = getString(R.string.emptynamefield)
-                return@setOnClickListener
-            }
-
-            if (binding.passField.toString() != binding.repeatPassField.toString()) {
-                binding.repeatPassField.error = getString(R.string.passdontmatch)
                 return@setOnClickListener
             }
 
             AndroidUtils.hideKeyboard(requireView())
 
-            if (viewModel.photo.value == null){
-                viewModel.registerUserWithoutAvatar(
-                    binding.loginField.toString(),
-                    binding.repeatPassField.toString(),
-                    binding.nameField.toString()
-                )
-            }else {
+
                 viewModel.registerUser(
-                    binding.loginField.toString(),
-                    binding.repeatPassField.toString(),
-                    binding.nameField.toString(),
-                    viewModel.photo.value!!
-                )
+                    binding.loginField.text.toString(),
+                    binding.repeatPassField.text.toString(),
+                    binding.nameField.text.toString(),
+                    viewModel.photo.value)
             }
 
             lifecycleScope.launch {
@@ -117,7 +105,6 @@ class SignUpFragment : Fragment() {
                     }
                 }
             }
-        }
 
         if (viewModel.errorMessage.value.isNotEmpty()) {
             Snackbar.make(binding.root, viewModel.errorMessage.value, Snackbar.LENGTH_LONG)

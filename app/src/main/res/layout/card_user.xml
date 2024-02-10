@@ -21,7 +21,7 @@
         app:srcCompat="@drawable/ic_account_circle_24" />
 
     <TextView
-        android:id="@+id/author"
+        android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
@@ -35,7 +35,7 @@
         tools:text="Lydia Westervelt" />
 
     <TextView
-        android:id="@+id/published"
+        android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_marginStart="16dp"

@@ -19,4 +19,8 @@
         android:id="@+id/signUpFragment"
         android:name="ru.netology.nework.activity.SignUpFragment"
         android:label="SignUpFragment" />
+    <fragment
+        android:id="@+id/usersFeedFragment"
+        android:name="ru.netology.nework.activity.UsersFeedFragment"
+        android:label="UsersFeedFragment" />
 </navigation>

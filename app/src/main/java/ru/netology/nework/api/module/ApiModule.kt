@@ -45,13 +45,13 @@ class ApiModule {
         appAuth: AppAuth
     ) : OkHttpClient = OkHttpClient.Builder()
         .addInterceptor { chain ->
+            val newRequestBuilder = chain.request().newBuilder()
             appAuth.authStateFlow.value.token?.let { token ->
-                val newRequest = chain.request().newBuilder()
-                    .addHeader("Authorization", token)
-                    .build()
-                return@addInterceptor chain.proceed(newRequest)
+                newRequestBuilder.addHeader("Authorization", token)
             }
-            chain.proceed(chain.request())
+            newRequestBuilder.addHeader("Api-Key", API_KEY)
+            val newRequest = newRequestBuilder.build()
+            return@addInterceptor chain.proceed(newRequest)
         }
         .addInterceptor(logging)
         .build()

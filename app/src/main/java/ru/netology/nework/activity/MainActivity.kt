@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavMenu.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.users -> findNavController(R.id.container).navigate(R.id.usersFeedFragment)
+                R.id.posts -> findNavController(R.id.container).navigate(R.id.postsFeedFragment)
+                R.id.events -> findNavController(R.id.container).navigate(R.id.eventFeedFragment)
             }
             true
         }

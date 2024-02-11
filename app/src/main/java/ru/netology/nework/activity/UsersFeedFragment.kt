@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import ru.netology.nework.adapter.OnUserInteractionListener
-import ru.netology.nework.adapter.UserFeedAdapter
+import ru.netology.nework.adapter.OnFeedItemInteractionListener
+import ru.netology.nework.adapter.FeedItemAdapter
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentFeedBinding
 import ru.netology.nework.model.UserResponse
@@ -30,13 +30,10 @@ class UsersFeedFragment : Fragment() {
     ): View {
         val binding = FragmentFeedBinding.inflate(layoutInflater)
 
-        val adapter = UserFeedAdapter(object : OnUserInteractionListener {
+        val adapter = FeedItemAdapter(object : OnFeedItemInteractionListener<Unit> {})
 
-            override fun onUser(user: UserResponse) {
+        binding.fab.visibility = View.GONE
 
-            }
-
-        })
         binding.list.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) {
             adapter.submitList(it)

@@ -35,4 +35,6 @@
     <string name="accaunt">Accaunt</string>
     <string name="wall">Wall</string>
     <string name="jobs">Jobs</string>
+    <string name="event_type_offline">Оффлайн</string>
+    <string name="event_type_online">Онлайн</string>
 </resources>

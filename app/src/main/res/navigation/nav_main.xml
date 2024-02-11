@@ -23,4 +23,8 @@
         android:id="@+id/usersFeedFragment"
         android:name="ru.netology.nework.activity.UsersFeedFragment"
         android:label="UsersFeedFragment" />
+    <fragment
+        android:id="@+id/eventFeedFragment"
+        android:name="ru.netology.nework.activity.EventFeedFragment"
+        android:label="EventFeedFragment" />
 </navigation>

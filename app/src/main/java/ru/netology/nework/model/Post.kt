@@ -1,7 +1,7 @@
 package ru.netology.nework.model
 
 data class Post(
-    val id: Long,
+    override val id: Long,
     val authorId: Long,
     val author: String,
     val authorJob: String?,
@@ -16,5 +16,4 @@ data class Post(
     val likeByMe: Boolean,
     val attachment: Attachment?,
     val users: UserPreview,
-    val ownedByMe:Boolean = false
-)
+):FeedItem

@@ -18,7 +18,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
+        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -42,6 +42,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -51,6 +52,8 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation (platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation ("com.google.firebase:firebase-analytics")
     implementation ("androidx.recyclerview:recyclerview:1.3.2")

@@ -13,7 +13,7 @@ import ru.netology.nework.model.Post
 interface EventsApi {
 
     @GET("events")
-    suspend fun getEvents(): Response<List<Post>>
+    suspend fun getEvents(): Response<List<Event>>
 
     @POST("events")
     suspend fun saveEvent(@Body event: Event): Response<Event>

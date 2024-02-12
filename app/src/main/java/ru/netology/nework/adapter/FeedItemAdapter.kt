@@ -84,6 +84,10 @@ class PostViewHolder(
 
     fun bind(post: Post) {
         binding.apply {
+            imageAttachment.visibility = View.GONE
+            audioAttachment.visibility = View.GONE
+            videoAttachment.visibility = View.GONE
+            playVideoButton.visibility = View.GONE
             if (post.authorAvatar != null) {
                 avatar.load(post.authorAvatar)
             } else {
@@ -94,9 +98,7 @@ class PostViewHolder(
             content.text = post.content
             likes.text = post.likeOwnerIds.size.toString()
             if (post.attachment != null) {
-                imageAttachment.visibility = View.GONE
-                audioAttachment.visibility = View.GONE
-                group.visibility = View.GONE
+
                 when (post.attachment.type) {
                     AttachmentType.IMAGE ->
                         imageAttachment.apply {
@@ -110,11 +112,10 @@ class PostViewHolder(
                             onFeedItemInteractionListener.onMedia(post)
                         }
 
-                    AttachmentType.VIDEO ->
-                        group.apply {
-                            playVideoButton.apply {
-                                visibility = View.GONE
-                                setOnClickListener {
+                    AttachmentType.VIDEO ->{
+                        videoAttachment.visibility = View.VISIBLE
+                        playVideoButton.visibility = View.VISIBLE
+                            playVideoButton.setOnClickListener {
                                     videoAttachment.apply {
                                         setMediaController(MediaController(context))
                                         setVideoURI(
@@ -131,7 +132,6 @@ class PostViewHolder(
                                 }
                             }
 
-                        }
                 }
             }
 //            if (appAuth.authStateFlow.value.id == post.authorId) {
@@ -172,7 +172,8 @@ class EventViewHolder(
         binding.apply {
             imageAttachment.visibility = View.GONE
             audioAttachment.visibility = View.GONE
-            group.visibility = View.GONE
+            videoAttachment.visibility = View.GONE
+            playVideoButton.visibility = View.GONE
 
             if (event.authorAvatar != null) {
                 avatar.load(event.authorAvatar)
@@ -188,9 +189,6 @@ class EventViewHolder(
             likes.text = event.likeOwnerIds.size.toString()
 
             if (event.attachment != null) {
-                imageAttachment.visibility = View.GONE
-                audioAttachment.visibility = View.GONE
-                group.visibility = View.GONE
                 when (event.attachment.type) {
                     AttachmentType.IMAGE ->
                         imageAttachment.apply {
@@ -206,28 +204,25 @@ class EventViewHolder(
                             }
                         }
 
-                    AttachmentType.VIDEO ->
-                        group.apply {
-                            visibility = View.VISIBLE
-                            playVideoButton.apply {
-                                setOnClickListener {
-                                    videoAttachment.apply {
-                                        setMediaController(MediaController(context))
-                                        setVideoURI(
-                                            Uri.parse(event.attachment.url)
-                                        )
-                                        setOnPreparedListener {
-                                            start()
-                                        }
-                                        setOnCompletionListener {
-                                            stopPlayback()
-                                        }
-                                        onFeedItemInteractionListener.onMedia(event)
-                                    }
+                    AttachmentType.VIDEO ->{
+                        videoAttachment.visibility = View.VISIBLE
+                        playVideoButton.visibility = View.VISIBLE
+                        playVideoButton.setOnClickListener {
+                            videoAttachment.apply {
+                                setMediaController(MediaController(context))
+                                setVideoURI(
+                                    Uri.parse(event.attachment.url)
+                                )
+                                setOnPreparedListener {
+                                    start()
                                 }
+                                setOnCompletionListener {
+                                    stopPlayback()
+                                }
+                                onFeedItemInteractionListener.onMedia(event)
                             }
-
                         }
+                    }
                 }
             }
 

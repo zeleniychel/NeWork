@@ -45,7 +45,12 @@ class PostsFeedFragment : Fragment() {
 //                }
             }
         })
-        binding.fab.visibility = View.VISIBLE
+        binding.fab.apply {
+            visibility = View.VISIBLE
+            setOnClickListener{
+
+            }
+        }
 
         binding.list.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) {

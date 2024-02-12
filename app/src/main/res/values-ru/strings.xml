@@ -37,4 +37,5 @@
     <string name="jobs">Jobs</string>
     <string name="event_type_offline">Оффлайн</string>
     <string name="event_type_online">Онлайн</string>
+    <string name="signout">Sign out</string>
 </resources>

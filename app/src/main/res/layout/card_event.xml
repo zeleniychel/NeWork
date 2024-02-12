@@ -7,8 +7,8 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
-    android:orientation="vertical"
-    android:background="@drawable/border">
+    android:background="@drawable/border"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -82,79 +82,72 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-<FrameLayout
-    android:id="@+id/group"
-    android:layout_width="match_parent"
-    android:layout_height="300dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-    <VideoView
-        android:id="@+id/videoAttachment"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:contentDescription="@string/attachment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/playVideoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:contentDescription="@string/play"
-        android:src="@drawable/ic_play_selector"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <VideoView
+            android:id="@+id/videoAttachment"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:contentDescription="@string/attachment"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+        <ImageButton
+            android:id="@+id/playVideoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:checkable ="true"
+            android:contentDescription="@string/play"
+            android:src="@drawable/ic_play_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/eventType"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:textColor="#1D1B20"
-            android:textSize="16sp"
-            tools:text="Online" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/eventDate"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:textSize="14sp"
-            tools:text="11.05.22 11:21" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/eventType"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:textColor="#1D1B20"
+                android:textSize="16sp"
+                tools:text="Online" />
 
-    <ImageView
-        android:id="@+id/audioAttachment"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
-        android:layout_gravity="end|center"
-        android:contentDescription="@string/attachment"
-        android:src="@drawable/ic_play_circle_filled_24"
-        android:visibility="gone"/>
-</FrameLayout>
+            <TextView
+                android:id="@+id/eventDate"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:textSize="14sp"
+                tools:text="11.05.22 11:21" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/audioAttachment"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/attachment"
+            android:src="@drawable/ic_play_circle_filled_24"
+            android:visibility="gone" />
+    </FrameLayout>
 
 
     <TextView
@@ -189,11 +182,11 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/participants"
             style="@style/MyCustomButtonStyle"
-            tools:text="123"
             android:layout_gravity="end"
             app:icon="@drawable/ic_people_outline_24"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="123" />
     </FrameLayout>
 </LinearLayout>

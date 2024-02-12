@@ -21,7 +21,9 @@ class MediaLifecyclerObserver:LifecycleEventObserver {
                 mediaPlayer?.release()
                 mediaPlayer = null
             }
-            Lifecycle.Event.ON_DESTROY -> source.lifecycle.removeObserver(this)
+            Lifecycle.Event.ON_DESTROY -> {
+                source.lifecycle.removeObserver(this)
+            }
             else->Unit
         }
 

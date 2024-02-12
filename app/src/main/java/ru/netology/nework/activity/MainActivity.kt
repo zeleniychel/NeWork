@@ -12,10 +12,15 @@ import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
+import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.ActivityMainBinding
 import ru.netology.nework.viewmodel.AuthViewModel
+import javax.inject.Inject
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    @Inject
+    lateinit var  appAuth: AppAuth
     val viewModel by viewModels<AuthViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,13 +39,17 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+        binding.topAppBar.overflowIcon
 
         addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_main, menu)
+
+
             }
 
             override fun onPrepareMenu(menu: Menu) {
+                menu.setGroupVisible(R.id.authenticated, viewModel.authenticated)
                 menu.setGroupVisible(R.id.unauthenticated, !viewModel.authenticated)
             }
 
@@ -55,13 +64,14 @@ class MainActivity : AppCompatActivity() {
                         findNavController(R.id.container).navigate(R.id.signUpFragment)
                         true
                     }
+                    R.id.signout ->{
+                        appAuth.removeAuth()
+                        true
+                    }
 
                     else -> false
                 }
             }
         })
-    }
-    override fun onResume() {
-        super.onResume()
     }
 }

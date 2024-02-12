@@ -91,12 +91,12 @@ class SignUpFragment : Fragment() {
             AndroidUtils.hideKeyboard(requireView())
 
 
-                viewModel.registerUser(
-                    binding.loginField.text.toString(),
-                    binding.repeatPassField.text.toString(),
-                    binding.nameField.text.toString(),
-                    viewModel.photo.value)
-            }
+            viewModel.registerUser(
+                binding.loginField.text.toString(),
+                binding.repeatPassField.text.toString(),
+                binding.nameField.text.toString(),
+                viewModel.photo.value
+            )
 
             lifecycleScope.launch {
                 lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -106,9 +106,10 @@ class SignUpFragment : Fragment() {
                 }
             }
 
-        if (viewModel.errorMessage.value.isNotEmpty()) {
-            Snackbar.make(binding.root, viewModel.errorMessage.value, Snackbar.LENGTH_LONG)
-                .show()
+            if (viewModel.errorMessage.value.isNotEmpty()) {
+                Snackbar.make(binding.root, viewModel.errorMessage.value, Snackbar.LENGTH_LONG)
+                    .show()
+            }
         }
         return binding.root
     }

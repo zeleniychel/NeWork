@@ -40,13 +40,25 @@ class EventFeedFragment: Fragment() {
             override fun onMedia(item: Event) {
                 if (item.attachment?.type == AttachmentType.AUDIO){
                     observer.apply {
-                        mediaPlayer?.setDataSource(item.attachment.url)
-                    }.play()
+                        if (mediaPlayer?.isPlaying == true){
+                            mediaPlayer?.stop()
+                            mediaPlayer = null
+                        } else {
+                            mediaPlayer?.setDataSource(item.attachment.url)
+                            observer.play()
+                        }
+
+                    }
                 }
 
             }
         })
-        binding.fab.visibility = View.VISIBLE
+        binding.fab.apply {
+            visibility = View.VISIBLE
+            setOnClickListener{
+
+            }
+        }
 
         binding.list.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) {

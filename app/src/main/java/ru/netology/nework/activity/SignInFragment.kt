@@ -55,8 +55,8 @@ class SignInFragment : Fragment() {
             AndroidUtils.hideKeyboard(requireView())
             viewModel.updateUser(
                 binding.loginField.text.toString(),
-                binding.passField.text.toString()
-            )
+                binding.passField.text.toString())
+
             lifecycleScope.launch {
                 lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                     viewModel.authentication.collectLatest {

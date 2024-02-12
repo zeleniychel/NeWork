@@ -10,14 +10,16 @@
         android:layout_gravity="center"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:orientation="vertical"
-        app:errorEnabled="true">
+        android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/loginLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="#E6E0E9"
+            app:hintTextColor="@color/purple"
+            app:boxStrokeColor="@color/purple"
             app:errorEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:hint="@string/loginauth">
@@ -30,12 +32,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
             android:backgroundTint="#E6E0E9"
+            app:hintTextColor="@color/purple"
             android:hint="@string/password"
+            app:boxStrokeColor="@color/purple"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             app:errorEnabled="true"
             app:endIconMode="password_toggle">

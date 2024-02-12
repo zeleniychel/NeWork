@@ -44,6 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="24dp"
+                    android:backgroundTint="@color/purple"
                     android:text="@string/remove" />
             </FrameLayout>
 
@@ -51,12 +52,13 @@
                 android:id="@+id/videoContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="16dp"
                 android:visibility="gone">
 
                 <VideoView
                     android:id="@+id/videoPreview"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="300dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/attachment"
                     android:padding="16dp" />
@@ -67,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="24dp"
+                    android:backgroundTint="@color/purple"
                     android:text="@string/remove" />
             </FrameLayout>
 
@@ -91,12 +94,10 @@
                     android:id="@+id/audioRemove"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_gravity="bottom|center_horizontal"
-
+                    android:backgroundTint="@color/purple"
                     android:text="@string/remove" />
             </FrameLayout>
-
         </LinearLayout>
 
 

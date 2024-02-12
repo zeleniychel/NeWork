@@ -14,24 +14,26 @@
 
         <ImageView
             android:id="@+id/avatar"
-            android:layout_marginBottom="16dp"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
             android:clickable="true"
             android:contentDescription="@string/avatar"
             android:focusable="true"
             android:src="@drawable/ic_account_circle_24" />
 
         <com.google.android.material.textfield.TextInputLayout
-
+            android:id="@+id/loginLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:errorEnabled="true"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:backgroundTint="#E6E0E9"
-            android:hint="@string/loginauth">
+            app:hintTextColor="@color/purple"
+            app:boxStrokeColor="@color/purple"
+            android:hint="@string/loginauth"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginField"
@@ -41,15 +43,16 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-
+            android:id="@+id/nameLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
-            app:errorEnabled="true"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:backgroundTint="#E6E0E9"
-            android:hint="@string/name">
+            app:hintTextColor="@color/purple"
+            app:boxStrokeColor="@color/purple"
+            android:hint="@string/name"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nameField"
@@ -59,16 +62,17 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-
+            android:id="@+id/passLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            app:errorEnabled="true"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:backgroundTint="#E6E0E9"
+            app:hintTextColor="@color/purple"
+            app:boxStrokeColor="@color/purple"
             android:hint="@string/password"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passField"
@@ -79,16 +83,17 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-
+            android:id="@+id/repeatPassLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:errorEnabled="true"
-            android:layout_marginTop="8dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            app:hintTextColor="@color/purple"
+            app:boxStrokeColor="@color/purple"
             android:backgroundTint="#E6E0E9"
             android:hint="@string/password"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/repeatPassField"
@@ -97,15 +102,14 @@
                 android:inputType="textPassword" />
 
 
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/signUpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#6750A4"
             android:layout_marginTop="8dp"
+            android:backgroundTint="#6750A4"
             android:text="@string/sign_up" />
 
     </LinearLayout>

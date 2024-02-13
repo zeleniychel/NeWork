@@ -55,6 +55,10 @@ class PostFragment: Fragment() {
                     }
                 }
             }
+
+            override fun onLike(post: Post) {
+                viewModel.likePostById(post)
+            }
         })
 
         holder.bind(postArg ?: Post())
@@ -72,11 +76,6 @@ class PostFragment: Fragment() {
                 R.id.action_postFragment_to_usersFragment,
                 bundleOf("men" to postArg))
         }
-
-
-
-
-
 
         return binding.root
     }

@@ -8,9 +8,9 @@ import ru.netology.nework.model.Event
 import java.io.IOException
 import javax.inject.Inject
 
-class EventRepositoryImpl@Inject constructor(
+class EventRepositoryImpl @Inject constructor(
     private val api: EventsApi
-): EventRepository {
+) : EventRepository {
     override suspend fun getEvents(): List<Event> {
         try {
             val response = api.getEvents()
@@ -23,5 +23,23 @@ class EventRepositoryImpl@Inject constructor(
         } catch (e: Exception) {
             throw UnknownError
         }
+    }
+
+    override suspend fun likeEventById(event: Event) {
+        try {
+            val response = if (event.likeByMe) {
+                api.unlikeEventById(event.id)
+            } else {
+                api.likeEventById(event.id)
+            }
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+
     }
 }

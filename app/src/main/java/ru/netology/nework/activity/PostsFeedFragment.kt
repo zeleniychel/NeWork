@@ -54,6 +54,9 @@ class PostsFeedFragment : Fragment() {
                 }
             }
 
+            override fun onLike(post: Post) {
+                viewModel.likePostById(post)
+            }
 
             override fun onPost(post: Post) {
                 findNavController().navigate(

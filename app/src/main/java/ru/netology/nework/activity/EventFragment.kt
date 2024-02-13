@@ -10,18 +10,19 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
-import ru.netology.nework.adapter.event.EventAdapter
+import ru.netology.nework.adapter.event.EventDetailedViewHolder
 import ru.netology.nework.adapter.event.EventInteractionListener
 import ru.netology.nework.auth.AppAuth
-import ru.netology.nework.databinding.FragmentFeedBinding
+import ru.netology.nework.databinding.FragmentEventBinding
 import ru.netology.nework.mediaplayer.MediaLifecyclerObserver
 import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Event
+import ru.netology.nework.util.getParcelableCompat
 import ru.netology.nework.viewmodel.EventViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class EventFeedFragment : Fragment() {
+class EventFragment: Fragment() {
 
     private val viewModel by viewModels<EventViewModel>()
     private val observer = MediaLifecyclerObserver()
@@ -34,52 +35,55 @@ class EventFeedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentFeedBinding.inflate(layoutInflater)
         lifecycle.addObserver(observer)
+        val eventArg = arguments?.getParcelableCompat<Event>("key")
+        val binding = FragmentEventBinding.inflate(layoutInflater)
 
-        val adapter = EventAdapter(object : EventInteractionListener {
+        val holder = EventDetailedViewHolder(binding,object : EventInteractionListener {
 
-
-            override fun onMedia(event: Event) {
-                if (event.attachment?.type == AttachmentType.AUDIO) {
+            override fun onMedia(event:Event) {
+                if (event.attachment?.type == AttachmentType.AUDIO){
                     observer.apply {
-                        if (mediaPlayer?.isPlaying == true) {
+                        if (mediaPlayer?.isPlaying == true){
                             mediaPlayer?.stop()
                         } else {
                             mediaPlayer?.reset()
                             mediaPlayer?.setDataSource(event.attachment.url)
                             observer.play()
                         }
+
                     }
                 }
-            }
-
-            override fun onEvent(event: Event) {
-                findNavController().navigate(
-                    R.id.action_eventFeedFragment_to_eventFragment,
-                    bundleOf("key" to event)
-                )
             }
 
             override fun onLike(event: Event) {
                 viewModel.likeEventById(event)
             }
         })
-        binding.fab.apply {
-            visibility = View.VISIBLE
-            setOnClickListener {
 
-            }
-        }
-
-        binding.list.adapter = adapter
+        holder.bind(eventArg ?: Event())
         viewModel.data.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            holder.bind(it.find { (id) -> id == eventArg?.id } ?: return@observe)
         }
 
-
-
-
+        binding.usersList.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_postFragment_to_usersFragment,
+                bundleOf("key" to eventArg)
+            )
+        }
+        binding.participantUsersList.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_postFragment_to_usersFragment,
+                bundleOf("par" to eventArg)
+            )
+        }
+        binding.participantUsersList.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_postFragment_to_usersFragment,
+                bundleOf("speak" to eventArg)
+            )
+        }
 
         return binding.root
     }

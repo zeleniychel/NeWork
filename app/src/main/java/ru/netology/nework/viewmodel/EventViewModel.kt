@@ -11,7 +11,7 @@ import ru.netology.nework.repository.event.EventRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class EventViewModel@Inject constructor(
+class EventViewModel @Inject constructor(
     private val repository: EventRepository,
 ) : ViewModel() {
     private val _data = MutableLiveData<List<Event>>(emptyList())
@@ -21,7 +21,11 @@ class EventViewModel@Inject constructor(
         getEvents()
     }
 
-    private fun getEvents() = viewModelScope.launch{
+    private fun getEvents() = viewModelScope.launch {
         _data.value = repository.getEvents()
+    }
+
+    fun likeEventById(event: Event) = viewModelScope.launch {
+        repository.likeEventById(event)
     }
 }

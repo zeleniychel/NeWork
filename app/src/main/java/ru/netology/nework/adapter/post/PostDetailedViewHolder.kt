@@ -35,7 +35,10 @@ class PostDetailedViewHolder(
             published.formattedDate(post.published)
             content.text = post.content
             likesCount.text = post.likeOwnerIds.size.toString()
-            userJob.text = post.authorJob
+            likesCount.isChecked = post.likeByMe
+            if (post.authorJob != null) {
+                userJob.text = post.authorJob
+            }
             mentionedCount.text = post.mentionIds.size.toString()
 
 
@@ -113,7 +116,9 @@ class PostDetailedViewHolder(
                     AttachmentType.AUDIO ->
                         audioAttachment.apply {
                             visibility = View.VISIBLE
-                            postInteractionListener.onMedia(post)
+                            setOnClickListener {
+                                postInteractionListener.onMedia(post)
+                            }
                         }
 
                     AttachmentType.VIDEO -> {
@@ -136,6 +141,9 @@ class PostDetailedViewHolder(
                         }
                     }
                 }
+            }
+            likesCount.setOnClickListener {
+                postInteractionListener.onLike(post)
             }
             root.setOnClickListener {
                 postInteractionListener.onPost(post)

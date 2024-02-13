@@ -30,7 +30,11 @@
     <fragment
         android:id="@+id/eventFeedFragment"
         android:name="ru.netology.nework.activity.EventFeedFragment"
-        android:label="EventFeedFragment" />
+        android:label="EventFeedFragment" >
+        <action
+            android:id="@+id/action_eventFeedFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
+    </fragment>
     <fragment
         android:id="@+id/postFragment"
         android:name="ru.netology.nework.activity.PostFragment"
@@ -43,4 +47,8 @@
         android:id="@+id/usersFragment"
         android:name="ru.netology.nework.activity.UsersFragment"
         android:label="UsersFragment" />
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="ru.netology.nework.activity.EventFragment"
+        android:label="EventFragment" />
 </navigation>

@@ -34,6 +34,7 @@ class PostViewHolder(
             published.formattedDate(post.published)
             content.text = post.content
             likes.text = post.likeOwnerIds.size.toString()
+            likes.isChecked = post.likeByMe
             if (post.attachment != null) {
 
                 when (post.attachment.type) {
@@ -71,6 +72,9 @@ class PostViewHolder(
                         }
                     }
                 }
+            }
+            likes.setOnClickListener{
+                postInteractionListener.onLike(post)
             }
             root.setOnClickListener {
                 postInteractionListener.onPost(post)

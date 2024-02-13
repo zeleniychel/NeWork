@@ -24,4 +24,7 @@ class PostsViewModel@Inject constructor(
     private fun getPosts() = viewModelScope.launch{
         _data.value = repository.getPosts()
     }
+    fun likePostById(post: Post) = viewModelScope.launch {
+        repository.likePostById(post)
+    }
 }

@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ru.netology.nework.R
 import ru.netology.nework.adapter.OnFeedItemInteractionListener
 import ru.netology.nework.adapter.FeedItemAdapter
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentFeedBinding
 import ru.netology.nework.mediaplayer.MediaLifecyclerObserver
-import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Post
-import ru.netology.nework.model.UserResponse
 import ru.netology.nework.viewmodel.PostsViewModel
 import javax.inject.Inject
 
@@ -44,10 +45,18 @@ class PostsFeedFragment : Fragment() {
 //                    }.play()
 //                }
             }
+
+            override fun onItem(item: Post) {
+                findNavController().navigate(
+                    R.id.action_postsFeedFragment_to_postFragment,
+                    bundleOf("key" to item)
+                )
+
+            }
         })
         binding.fab.apply {
             visibility = View.VISIBLE
-            setOnClickListener{
+            setOnClickListener {
 
             }
         }

@@ -42,4 +42,6 @@
     <string name="invalid_login">A user with this username has already been registered</string>
     <string name="psswords_dont_match">Passwords don\'t match</string>
     <string name="avatar_format_error">Select an image in JPEG or PNG format</string>
+    <string name="likers">Likers</string>
+    <string name="mentioned">Mentioned</string>
 </resources>

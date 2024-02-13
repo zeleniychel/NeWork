@@ -1,5 +1,9 @@
 package ru.netology.nework.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Post(
     override val id: Long,
     val authorId: Long,
@@ -15,5 +19,5 @@ data class Post(
     val likeOwnerIds: List<Long>,
     val likeByMe: Boolean,
     val attachment: Attachment?,
-    val users: UserPreview,
-):FeedItem
+    val users: Map<String,UserPreview>,
+):FeedItem, Parcelable

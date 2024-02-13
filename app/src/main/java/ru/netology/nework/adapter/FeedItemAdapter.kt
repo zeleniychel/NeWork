@@ -51,13 +51,21 @@ class FeedItemAdapter<T>(
             }
 
             R.layout.card_post -> {
-                val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                PostViewHolder(binding, onFeedItemInteractionListener as OnFeedItemInteractionListener<Post>)
+                val binding =
+                    CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                PostViewHolder(
+                    binding,
+                    onFeedItemInteractionListener as OnFeedItemInteractionListener<Post>
+                )
             }
 
             R.layout.card_event -> {
-                val binding = CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                EventViewHolder(binding, onFeedItemInteractionListener as OnFeedItemInteractionListener<Event>)
+                val binding =
+                    CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                EventViewHolder(
+                    binding,
+                    onFeedItemInteractionListener as OnFeedItemInteractionListener<Event>
+                )
             }
 
             else -> error("unknown item type")
@@ -112,27 +120,29 @@ class PostViewHolder(
                             onFeedItemInteractionListener.onMedia(post)
                         }
 
-                    AttachmentType.VIDEO ->{
+                    AttachmentType.VIDEO -> {
                         videoAttachment.visibility = View.VISIBLE
                         playVideoButton.visibility = View.VISIBLE
-                            playVideoButton.setOnClickListener {
-                                    videoAttachment.apply {
-                                        setMediaController(MediaController(context))
-                                        setVideoURI(
-                                            Uri.parse(post.attachment.url)
-                                        )
-                                        setOnPreparedListener {
-                                            start()
-                                        }
-                                        setOnCompletionListener {
-                                            stopPlayback()
-                                        }
-                                        onFeedItemInteractionListener.onMedia(post)
-                                    }
+                        playVideoButton.setOnClickListener {
+                            videoAttachment.apply {
+                                setMediaController(MediaController(context))
+                                setVideoURI(
+                                    Uri.parse(post.attachment.url)
+                                )
+                                setOnPreparedListener {
+                                    start()
                                 }
+                                setOnCompletionListener {
+                                    stopPlayback()
+                                }
+                                onFeedItemInteractionListener.onMedia(post)
                             }
-
+                        }
+                    }
                 }
+            }
+            root.setOnClickListener {
+                onFeedItemInteractionListener.onItem(post)
             }
 //            if (appAuth.authStateFlow.value.id == post.authorId) {
 //                menu.visibility = View.VISIBLE
@@ -204,7 +214,7 @@ class EventViewHolder(
                             }
                         }
 
-                    AttachmentType.VIDEO ->{
+                    AttachmentType.VIDEO -> {
                         videoAttachment.visibility = View.VISIBLE
                         playVideoButton.visibility = View.VISIBLE
                         playVideoButton.setOnClickListener {
@@ -224,6 +234,10 @@ class EventViewHolder(
                         }
                     }
                 }
+            }
+
+            root.setOnClickListener {
+                onFeedItemInteractionListener.onItem(event)
             }
 
 //            if (appAuth.authStateFlow.value.id == post.authorId) {

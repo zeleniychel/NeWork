@@ -11,14 +11,18 @@ import ru.netology.nework.adapter.user.UserAdapter
 import ru.netology.nework.adapter.user.UserInteractionListener
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentFeedBinding
+import ru.netology.nework.model.Post
 import ru.netology.nework.model.UserResponse
+import ru.netology.nework.util.getParcelableCompat
 import ru.netology.nework.viewmodel.UsersFeedViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UsersFeedFragment : Fragment() {
+class UsersFragment : Fragment() {
 
     private val viewModel by viewModels<UsersFeedViewModel>()
+
+
 
     @Inject
     lateinit var appAuth: AppAuth
@@ -28,20 +32,29 @@ class UsersFeedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         val binding = FragmentFeedBinding.inflate(layoutInflater)
+        val likersIds = arguments?.getParcelableCompat<Post>("like")
+        val menIds = arguments?.getParcelableCompat<Post>("men")
 
-        val adapter = UserAdapter(object : UserInteractionListener {
-
-            override fun onUser(user: UserResponse) {
-
-            }
-        })
+        val adapter = UserAdapter(object : UserInteractionListener {})
 
         binding.fab.visibility = View.GONE
 
         binding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        viewModel.data.observe(viewLifecycleOwner) { list ->
+            val users = mutableListOf<UserResponse>()
+            if (menIds == null){
+                for (userId in likersIds!!.likeOwnerIds) {
+                    list.find { user -> user.id == userId }?.let { users.add(it) }
+                }
+            } else {
+                for (userId in menIds.mentionIds) {
+                    list.find { user -> user.id == userId }?.let { users.add(it) }
+                }
+            }
+
+                adapter.submitList(users)
         }
 
 

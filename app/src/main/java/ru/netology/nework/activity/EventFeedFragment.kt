@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import ru.netology.nework.adapter.FeedItemAdapter
-import ru.netology.nework.adapter.OnFeedItemInteractionListener
+import ru.netology.nework.adapter.event.EventAdapter
+import ru.netology.nework.adapter.event.EventInteractionListener
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentFeedBinding
 import ru.netology.nework.mediaplayer.MediaLifecyclerObserver
@@ -34,17 +34,17 @@ class EventFeedFragment: Fragment() {
         val binding = FragmentFeedBinding.inflate(layoutInflater)
         lifecycle.addObserver(observer)
 
-        val adapter = FeedItemAdapter(object : OnFeedItemInteractionListener<Event> {
+        val adapter = EventAdapter(object : EventInteractionListener{
 
 
-            override fun onMedia(item: Event) {
-                if (item.attachment?.type == AttachmentType.AUDIO){
+            override fun onMedia(event: Event) {
+                if (event.attachment?.type == AttachmentType.AUDIO){
                     observer.apply {
                         if (mediaPlayer?.isPlaying == true){
                             mediaPlayer?.stop()
-                            mediaPlayer = null
                         } else {
-                            mediaPlayer?.setDataSource(item.attachment.url)
+                            mediaPlayer?.reset()
+                            mediaPlayer?.setDataSource(event.attachment.url)
                             observer.play()
                         }
 

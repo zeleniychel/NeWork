@@ -34,5 +34,13 @@
     <fragment
         android:id="@+id/postFragment"
         android:name="ru.netology.nework.activity.PostFragment"
-        android:label="PostFragment" />
+        android:label="PostFragment" >
+        <action
+            android:id="@+id/action_postFragment_to_usersFragment"
+            app:destination="@id/usersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/usersFragment"
+        android:name="ru.netology.nework.activity.UsersFragment"
+        android:label="UsersFragment" />
 </navigation>

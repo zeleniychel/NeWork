@@ -10,11 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
-import ru.netology.nework.adapter.OnFeedItemInteractionListener
-import ru.netology.nework.adapter.FeedItemAdapter
+import ru.netology.nework.adapter.post.PostInteractionListener
+import ru.netology.nework.adapter.post.PostAdapter
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentFeedBinding
 import ru.netology.nework.mediaplayer.MediaLifecyclerObserver
+import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Post
 import ru.netology.nework.viewmodel.PostsViewModel
 import javax.inject.Inject
@@ -36,20 +37,28 @@ class PostsFeedFragment : Fragment() {
         lifecycle.addObserver(observer)
         val binding = FragmentFeedBinding.inflate(layoutInflater)
 
-        val adapter = FeedItemAdapter(object : OnFeedItemInteractionListener<Post> {
+        val adapter = PostAdapter(object : PostInteractionListener {
 
-            override fun onMedia(item: Post) {
-//                if (item.attachment?.type == AttachmentType.AUDIO){
-//                    observer.apply {
-//                        mediaPlayer?.setDataSource(item.attachment.url)
-//                    }.play()
-//                }
+            override fun onMedia(post: Post) {
+                if (post.attachment?.type == AttachmentType.AUDIO){
+                    observer.apply {
+                        if (mediaPlayer?.isPlaying == true){
+                            mediaPlayer?.stop()
+                        } else {
+                            mediaPlayer?.reset()
+                            mediaPlayer?.setDataSource(post.attachment.url)
+                            observer.play()
+                        }
+
+                    }
+                }
             }
 
-            override fun onItem(item: Post) {
+
+            override fun onPost(post: Post) {
                 findNavController().navigate(
                     R.id.action_postsFeedFragment_to_postFragment,
-                    bundleOf("key" to item)
+                    bundleOf("key" to post)
                 )
 
             }

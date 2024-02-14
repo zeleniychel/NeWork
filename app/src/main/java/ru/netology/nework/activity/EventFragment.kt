@@ -68,19 +68,19 @@ class EventFragment: Fragment() {
 
         binding.usersList.setOnClickListener {
             findNavController().navigate(
-                R.id.action_postFragment_to_usersFragment,
+                R.id.action_eventFragment_to_usersFragment,
                 bundleOf("key" to eventArg)
             )
         }
         binding.participantUsersList.setOnClickListener {
             findNavController().navigate(
-                R.id.action_postFragment_to_usersFragment,
+                R.id.action_eventFragment_to_usersFragment,
                 bundleOf("par" to eventArg)
             )
         }
         binding.participantUsersList.setOnClickListener {
             findNavController().navigate(
-                R.id.action_postFragment_to_usersFragment,
+                R.id.action_eventFragment_to_usersFragment,
                 bundleOf("speak" to eventArg)
             )
         }

@@ -42,4 +42,17 @@ class PostRepositoryImpl @Inject constructor(
         }
 
     }
+
+    override suspend fun savePost(post: Post) {
+        try {
+            val response = api.savePost(post)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
 }

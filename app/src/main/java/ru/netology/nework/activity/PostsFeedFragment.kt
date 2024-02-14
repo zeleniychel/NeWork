@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
+import ru.netology.nework.activity.dialog.LoginDialog
 import ru.netology.nework.adapter.post.PostInteractionListener
 import ru.netology.nework.adapter.post.PostAdapter
 import ru.netology.nework.auth.AppAuth
@@ -40,9 +41,9 @@ class PostsFeedFragment : Fragment() {
         val adapter = PostAdapter(object : PostInteractionListener {
 
             override fun onMedia(post: Post) {
-                if (post.attachment?.type == AttachmentType.AUDIO){
+                if (post.attachment?.type == AttachmentType.AUDIO) {
                     observer.apply {
-                        if (mediaPlayer?.isPlaying == true){
+                        if (mediaPlayer?.isPlaying == true) {
                             mediaPlayer?.stop()
                         } else {
                             mediaPlayer?.reset()
@@ -55,7 +56,11 @@ class PostsFeedFragment : Fragment() {
             }
 
             override fun onLike(post: Post) {
-                viewModel.likePostById(post)
+                if (appAuth.authStateFlow.value.id == 0L) {
+                    LoginDialog().show(childFragmentManager, "")
+                } else {
+                    viewModel.likePostById(post)
+                }
             }
 
             override fun onPost(post: Post) {
@@ -69,7 +74,11 @@ class PostsFeedFragment : Fragment() {
         binding.fab.apply {
             visibility = View.VISIBLE
             setOnClickListener {
-
+                if (appAuth.authStateFlow.value.id == 0L) {
+                    LoginDialog().show(childFragmentManager, "")
+                } else {
+                    findNavController().navigate(R.id.action_postsFeedFragment_to_newPostFragment)
+                }
             }
         }
 
@@ -77,8 +86,6 @@ class PostsFeedFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
-
-
 
 
 

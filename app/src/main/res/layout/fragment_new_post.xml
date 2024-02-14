@@ -26,8 +26,7 @@
             <FrameLayout
                 android:id="@+id/imageContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/imagePreview"
@@ -36,66 +35,36 @@
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/attachment"
                     android:padding="16dp"
+                    android:visibility="gone"
                     tools:src="@tools:sample/avatars[2]" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/imageRemove"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:layout_marginBottom="24dp"
-                    android:backgroundTint="@color/purple"
-                    android:text="@string/remove" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/videoContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:visibility="gone">
-
                 <VideoView
                     android:id="@+id/videoPreview"
                     android:layout_width="wrap_content"
                     android:layout_height="300dp"
+                    android:visibility="gone"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/attachment"
                     android:padding="16dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/removeVideo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:layout_marginBottom="24dp"
-                    android:backgroundTint="@color/purple"
-                    android:text="@string/remove" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/audioContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-
                 <ImageView
                     android:id="@+id/audioPreview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="48dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/attachment"
                     android:padding="16dp"
+                    android:visibility="gone"
                     tools:src="@drawable/ic_play_circle_filled_24" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/audioRemove"
+                    android:id="@+id/remove"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="24dp"
                     android:backgroundTint="@color/purple"
+                    android:visibility="gone"
                     android:text="@string/remove" />
             </FrameLayout>
         </LinearLayout>
@@ -110,6 +79,7 @@
         android:layout_gravity="bottom">
 
         <ImageButton
+            android:id="@+id/pickPhoto"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"
@@ -117,6 +87,7 @@
             android:src="@drawable/ic_photo_camera_24" />
 
         <ImageButton
+            android:id="@+id/pickAttachment"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"
@@ -124,6 +95,7 @@
             android:src="@drawable/ic_attach_file_24" />
 
         <ImageButton
+            android:id="@+id/mention_user"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"
@@ -131,6 +103,7 @@
             android:src="@drawable/ic_people_24" />
 
         <ImageButton
+            android:id="@+id/makeMark"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"

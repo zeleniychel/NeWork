@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
+import ru.netology.nework.activity.dialog.LoginDialog
 import ru.netology.nework.adapter.event.EventAdapter
 import ru.netology.nework.adapter.event.EventInteractionListener
 import ru.netology.nework.auth.AppAuth
@@ -62,13 +63,22 @@ class EventFeedFragment : Fragment() {
             }
 
             override fun onLike(event: Event) {
-                viewModel.likeEventById(event)
+                if (appAuth.authStateFlow.value.id == 0L) {
+                    LoginDialog().show(childFragmentManager, "")
+                } else {
+                    viewModel.likeEventById(event)
+                }
             }
         })
+
         binding.fab.apply {
             visibility = View.VISIBLE
             setOnClickListener {
-
+                if (appAuth.authStateFlow.value.id == 0L) {
+                    LoginDialog().show(childFragmentManager, "")
+                } else {
+                    findNavController().navigate(R.id.action_eventFeedFragment_to_newEventFragment)
+                }
             }
         }
 
@@ -76,6 +86,8 @@ class EventFeedFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+
+
 
 
 

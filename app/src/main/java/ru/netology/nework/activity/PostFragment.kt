@@ -8,6 +8,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.mapview.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.adapter.post.PostDetailedViewHolder
@@ -29,6 +31,7 @@ class PostFragment: Fragment() {
 
     @Inject
     lateinit var appAuth: AppAuth
+    private lateinit var mapView: MapView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +41,9 @@ class PostFragment: Fragment() {
         lifecycle.addObserver(observer)
         val postArg = arguments?.getParcelableCompat<Post>("key")
         val binding = FragmentPostBinding.inflate(layoutInflater)
+
+        MapKitFactory.initialize(requireContext())
+        mapView = binding.mapView
 
         val holder = PostDetailedViewHolder(binding,object : PostInteractionListener {
 
@@ -78,5 +84,17 @@ class PostFragment: Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        MapKitFactory.getInstance().onStart()
+        mapView.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        MapKitFactory.getInstance().onStop()
+        mapView.onStop()
     }
 }

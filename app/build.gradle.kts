@@ -1,3 +1,4 @@
+import java.util.Properties
 plugins {
     id ("com.android.application")
     id ("org.jetbrains.kotlin.android")
@@ -27,6 +28,23 @@ android {
         buildConfig = true
     }
 
+    fun getMapkitApiKey(): String {
+        val properties = Properties()
+        project.file("C:\\Users\\chel1\\AndroidStudioProjects\\NeWork\\local.properties").inputStream().use { properties.load(it) }
+        return properties.getProperty("MAPKIT_API_KEY", "")
+    }
+
+    fun getApiKey(): String {
+        val properties = Properties()
+        project.file("C:\\Users\\chel1\\AndroidStudioProjects\\NeWork\\local.properties").inputStream().use { properties.load(it) }
+        return properties.getProperty("API_KEY", "")
+    }
+
+    val mapkitApiKey = getMapkitApiKey()
+    val apiKey = getApiKey()
+
+
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -39,6 +57,8 @@ android {
         debug {
             manifestPlaceholders["usesCleartextTraffic"] = true
             buildConfigField("String", "BASE_URL", "\"http://94.228.125.136:8080\"")
+            buildConfigField ("String", "MAPKIT_API_KEY", "\"${mapkitApiKey}\"")
+            buildConfigField ("String", "API_KEY", "\"${apiKey}\"")
         }
     }
     compileOptions {
@@ -52,6 +72,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.yandex.android:maps.mobile:4.4.0-lite")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation (platform("com.google.firebase:firebase-bom:32.7.1"))

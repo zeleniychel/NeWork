@@ -49,7 +49,7 @@ class ApiModule {
             appAuth.authStateFlow.value.token?.let { token ->
                 newRequestBuilder.addHeader("Authorization", token)
             }
-            newRequestBuilder.addHeader("Api-Key", API_KEY)
+            newRequestBuilder.addHeader("Api-Key", BuildConfig.API_KEY)
             val newRequest = newRequestBuilder.build()
             return@addInterceptor chain.proceed(newRequest)
         }

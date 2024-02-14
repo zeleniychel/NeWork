@@ -8,6 +8,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.mapview.MapView
+import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.adapter.event.EventDetailedViewHolder
@@ -29,6 +34,7 @@ class EventFragment: Fragment() {
 
     @Inject
     lateinit var appAuth: AppAuth
+    private lateinit var mapView: MapView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +44,30 @@ class EventFragment: Fragment() {
         lifecycle.addObserver(observer)
         val eventArg = arguments?.getParcelableCompat<Event>("key")
         val binding = FragmentEventBinding.inflate(layoutInflater)
+
+        MapKitFactory.initialize(requireContext())
+        mapView = binding.mapView
+
+        if (eventArg?.coords != null){
+            mapView.visibility = View.VISIBLE
+            mapView.mapWindow.map.apply {
+                move(
+                    CameraPosition(
+                        Point(
+                            eventArg.coords.lat,
+                            eventArg.coords.long),
+                        17.0F,
+                        0.0F,
+                        0.0F)
+                )
+                mapObjects.addPlacemark().apply {
+                    geometry = Point(
+                        eventArg.coords.lat,
+                        eventArg.coords.long)
+                    setIcon(ImageProvider.fromResource(requireContext(),R.drawable.pin))
+                }
+            }
+        }
 
         val holder = EventDetailedViewHolder(binding,object : EventInteractionListener {
 
@@ -86,5 +116,16 @@ class EventFragment: Fragment() {
         }
 
         return binding.root
+    }
+    override fun onStart() {
+        super.onStart()
+        MapKitFactory.getInstance().onStart()
+        mapView.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        MapKitFactory.getInstance().onStop()
+        mapView.onStop()
     }
 }

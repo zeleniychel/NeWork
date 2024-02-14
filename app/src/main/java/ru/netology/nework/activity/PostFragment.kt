@@ -9,7 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.mapview.MapView
+import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.adapter.post.PostDetailedViewHolder
@@ -18,13 +21,14 @@ import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentPostBinding
 import ru.netology.nework.mediaplayer.MediaLifecyclerObserver
 import ru.netology.nework.model.AttachmentType
+import ru.netology.nework.model.Coordinates
 import ru.netology.nework.model.Post
 import ru.netology.nework.util.getParcelableCompat
 import ru.netology.nework.viewmodel.PostsViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PostFragment: Fragment() {
+class PostFragment : Fragment() {
 
     private val viewModel by viewModels<PostsViewModel>()
     private val observer = MediaLifecyclerObserver()
@@ -45,12 +49,33 @@ class PostFragment: Fragment() {
         MapKitFactory.initialize(requireContext())
         mapView = binding.mapView
 
-        val holder = PostDetailedViewHolder(binding,object : PostInteractionListener {
+        if (postArg?.coords != null){
+            mapView.visibility = View.VISIBLE
+            mapView.mapWindow.map.apply {
+                move(
+                    CameraPosition(
+                        Point(
+                            postArg.coords.lat,
+                            postArg.coords.long),
+                        17.0F,
+                        0.0F,
+                        0.0F))
+                mapObjects.addPlacemark().apply {
+                    geometry = Point(
+                        postArg.coords.lat,
+                        postArg.coords.long)
+                    setIcon(ImageProvider.fromResource(requireContext(),R.drawable.pin))
+                }
+            }
+        }
+
+
+            val holder = PostDetailedViewHolder (binding, object : PostInteractionListener {
 
             override fun onMedia(post: Post) {
-                if (post.attachment?.type == AttachmentType.AUDIO){
+                if (post.attachment?.type == AttachmentType.AUDIO) {
                     observer.apply {
-                        if (mediaPlayer?.isPlaying == true){
+                        if (mediaPlayer?.isPlaying == true) {
                             mediaPlayer?.stop()
                         } else {
                             mediaPlayer?.reset()
@@ -75,12 +100,14 @@ class PostFragment: Fragment() {
         binding.usersList.setOnClickListener {
             findNavController().navigate(
                 R.id.action_postFragment_to_usersFragment,
-                bundleOf("like" to postArg))
+                bundleOf("like" to postArg)
+            )
         }
         binding.mentionedUsersList.setOnClickListener {
             findNavController().navigate(
                 R.id.action_postFragment_to_usersFragment,
-                bundleOf("men" to postArg))
+                bundleOf("men" to postArg)
+            )
         }
 
         return binding.root

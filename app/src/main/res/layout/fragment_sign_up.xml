@@ -29,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="#E6E0E9"
             app:hintTextColor="@color/purple"
             app:boxStrokeColor="@color/purple"
             android:hint="@string/loginauth"
@@ -37,6 +36,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginField"
+                android:backgroundTint="#E6E0E9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -48,7 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="#E6E0E9"
             app:hintTextColor="@color/purple"
             app:boxStrokeColor="@color/purple"
             android:hint="@string/name"
@@ -56,6 +55,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nameField"
+                android:backgroundTint="#E6E0E9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -67,7 +67,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="#E6E0E9"
             app:hintTextColor="@color/purple"
             app:boxStrokeColor="@color/purple"
             android:hint="@string/password"
@@ -77,6 +76,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passField"
                 android:layout_width="match_parent"
+                android:backgroundTint="#E6E0E9"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
 
@@ -90,7 +90,6 @@
             android:layout_gravity="center"
             app:hintTextColor="@color/purple"
             app:boxStrokeColor="@color/purple"
-            android:backgroundTint="#E6E0E9"
             android:hint="@string/password"
             app:endIconMode="password_toggle"
             app:errorEnabled="true">
@@ -98,6 +97,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/repeatPassField"
                 android:layout_width="match_parent"
+                android:backgroundTint="#E6E0E9"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
 

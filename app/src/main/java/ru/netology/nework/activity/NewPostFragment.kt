@@ -12,6 +12,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
@@ -19,7 +20,7 @@ import ru.netology.nework.databinding.FragmentNewPostBinding
 import ru.netology.nework.viewmodel.PostsViewModel
 
 @AndroidEntryPoint
-class NewPostFragment:Fragment() {
+class NewPostFragment : Fragment() {
 
     private val viewModel: PostsViewModel by activityViewModels()
     private val photoResultContract =
@@ -38,6 +39,7 @@ class NewPostFragment:Fragment() {
                 }
             }
         }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,7 +71,7 @@ class NewPostFragment:Fragment() {
         }
 
         binding.makeMark.setOnClickListener {
-            viewModel.save(binding.editText.text.toString())
+            findNavController().navigate(R.id.action_newPostFragment_to_mapFragment)
         }
 
         return binding.root

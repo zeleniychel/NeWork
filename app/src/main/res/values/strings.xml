@@ -29,7 +29,7 @@
     <string name="emptypassfield">Password cannot be empty</string>
     <string name="menu_remove">Remove</string>
     <string name="menu_edit">Edit</string>
-    <string name="emptynamefield">Password cannot be empty</string>
+    <string name="emptynamefield">Name cannot be empty</string>
     <string name="passdontmatch">Passwords don\'t match</string>
     <string name="accaunt">Accaunt</string>
     <string name="wall">Wall</string>
@@ -46,4 +46,6 @@
     <string name="participants">Participants</string>
     <string name="speakers">Speakers</string>
     <string name="looking_job">Looking for a job</string>
+    <string name="dash">-</string>
+    <string name="now">Now</string>
 </resources>

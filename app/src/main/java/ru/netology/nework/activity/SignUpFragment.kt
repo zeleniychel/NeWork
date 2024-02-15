@@ -84,7 +84,7 @@ class SignUpFragment : Fragment() {
                     loginLayout.error = getString(R.string.emptyloginfield)
                     errorFlag = true
                 }
-                if (nameField.text == null) {
+                if (nameField.text.toString().isEmpty()) {
                     nameLayout.error = getString(R.string.emptynamefield)
                     errorFlag = true
                 }

@@ -3,9 +3,6 @@
 
     <style name="Widget.AppTheme.AppBar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:background">#FEF7FF</item>
-        <item name="titleTextColor">#1D1B20</item>
-        <item name="subtitleTextColor">@color/material_on_primary_emphasis_medium</item>
-        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Toolbar.Primary</item>
         <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Toolbar.Popup.Primary</item>
     </style>
 

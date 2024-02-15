@@ -17,15 +17,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="#E6E0E9"
             app:hintTextColor="@color/purple"
             app:boxStrokeColor="@color/purple"
             app:errorEnabled="true"
+
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:hint="@string/loginauth">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginField"
+                android:backgroundTint="#E6E0E9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -36,7 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="#E6E0E9"
             app:hintTextColor="@color/purple"
             android:hint="@string/password"
             app:boxStrokeColor="@color/purple"
@@ -46,6 +46,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passField"
+                android:backgroundTint="#E6E0E9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />

@@ -47,4 +47,6 @@
     <string name="participants">Participants</string>
     <string name="speakers">Speakers</string>
     <string name="looking_job">Looking for a job</string>
+    <string name="dash">-</string>
+    <string name="now">Now</string>
 </resources>

@@ -11,7 +11,7 @@ import ru.netology.nework.repository.User.UserRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class UsersFeedViewModel@Inject constructor(
+class UsersViewModel@Inject constructor(
     private val repository: UserRepository,
 ) : ViewModel() {
 

@@ -10,6 +10,8 @@ import androidx.activity.viewModels
 import androidx.core.view.MenuProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
@@ -22,17 +24,19 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var appAuth: AppAuth
     val viewModel by viewModels<AuthViewModel>()
-    private lateinit var navController:NavController
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
-
-
         setContentView(binding.root)
 
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        navController = navHostFragment.navController
         setSupportActionBar(binding.topAppBar)
-navController = findNavController(R.id.container)
+        setupActionBarWithNavController(navController)
+
 
         binding.bottomNavMenu.setOnItemSelectedListener {
             when (it.itemId) {
@@ -42,21 +46,23 @@ navController = findNavController(R.id.container)
             }
             true
         }
-        findNavController(R.id.container).addOnDestinationChangedListener { _, destination, _ ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.signUpFragment,
                 R.id.signInFragment,
                 R.id.newEventFragment,
                 R.id.newPostFragment,
                 R.id.postFragment,
-                R.id.eventFragment-> {
+                R.id.eventFragment -> {
                     binding.bottomNavMenu.visibility = View.GONE
                 }
+
                 else -> {
                     binding.bottomNavMenu.visibility = View.VISIBLE
                 }
             }
         }
+
 
         addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -92,8 +98,9 @@ navController = findNavController(R.id.container)
             }
         })
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        navController.removeOnDestinationChangedListener { _, _, _ -> }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

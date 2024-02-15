@@ -3,7 +3,6 @@ package ru.netology.nework.util
 import android.widget.TextView
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 object Converter {
@@ -21,6 +20,18 @@ object Converter {
 fun TextView.formattedDate(dateString: String) {
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     val outputFormat = SimpleDateFormat("dd.MM.yy HH:mm", Locale.getDefault())
+    try {
+        val date = inputFormat.parse(dateString)
+        val formattedDate = outputFormat.format(date)
+        text = formattedDate
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+}
+
+fun TextView.formattedDateJob(dateString: String) {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("dd.MMM.yyyy", Locale.getDefault())
     try {
         val date = inputFormat.parse(dateString)
         val formattedDate = outputFormat.format(date)

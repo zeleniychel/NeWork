@@ -15,13 +15,13 @@ import ru.netology.nework.model.Event
 import ru.netology.nework.model.Post
 import ru.netology.nework.model.UserResponse
 import ru.netology.nework.util.getParcelableCompat
-import ru.netology.nework.viewmodel.UsersFeedViewModel
+import ru.netology.nework.viewmodel.UsersViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class UsersFragment : Fragment() {
 
-    private val viewModel by viewModels<UsersFeedViewModel>()
+    private val viewModel by viewModels<UsersViewModel>()
 
 
     @Inject

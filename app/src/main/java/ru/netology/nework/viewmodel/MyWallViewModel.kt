@@ -9,12 +9,11 @@ import kotlinx.coroutines.launch
 import ru.netology.nework.model.Job
 import ru.netology.nework.model.Post
 import ru.netology.nework.repository.mywall.MyWallRepository
-import ru.netology.nework.repository.wall.WallRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class WallViewModel @Inject constructor(
-    private val repository: WallRepository,
+class MyWallViewModel @Inject constructor(
+    private val repository: MyWallRepository,
 ) : ViewModel() {
     private val _data = MutableLiveData<List<Post>>(emptyList())
     val data: LiveData<List<Post>> = _data
@@ -23,15 +22,22 @@ class WallViewModel @Inject constructor(
     val dataJobs: LiveData<List<Job>> = _dataJobs
 
 
-    fun getWall(authorId: Long) = viewModelScope.launch {
-        _data.value = repository.getWall(authorId)
+    fun getMyWall() = viewModelScope.launch {
+        _data.value = repository.getMyWall()
     }
 
     fun likePostById(post: Post) = viewModelScope.launch {
-        repository.likePostById(post)
+        repository.likeMyPostById(post)
     }
 
-    fun getJobs(userId: Long) = viewModelScope.launch {
-        _dataJobs.value = repository.getJobs(userId)
+    fun getMyJobs() = viewModelScope.launch {
+        _dataJobs.value = repository.getMyJobs()
+    }
+
+    fun saveMyJob(job: Job) = viewModelScope.launch {
+        repository.saveMyJob(job)
+    }
+    fun deleteMyJob(id:Long) = viewModelScope.launch {
+        repository.deleteMyJob(id)
     }
 }

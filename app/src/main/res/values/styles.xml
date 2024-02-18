@@ -4,6 +4,9 @@
     <style name="Widget.AppTheme.AppBar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:background">#FEF7FF</item>
         <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Toolbar.Popup.Primary</item>
+        <item name="materialCalendarFullscreenTheme">
+            @style/ThemeOverlay.MaterialComponents.MaterialCalendar
+        </item>
     </style>
 
     <style name="MyCustomButtonStyle" parent="Widget.AppCompat.Button">
@@ -19,4 +22,12 @@
         <item name="android:textSize">14sp</item>
         <item name="iconTint">@color/purple</item>
     </style>
+
+    <style name="CustomDateDialog" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/purple</item>
+        <item name="colorSurfaceContainerHigh">@color/magnolia</item>
+        <item name="colorOnSurfaceVariant">@color/black</item>
+        <item name="colorOutlineVariant">#CAC4D0</item>
+    </style>
+
 </resources>

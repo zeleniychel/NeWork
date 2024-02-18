@@ -28,10 +28,9 @@ fun TextView.formattedDate(dateString: String) {
         e.printStackTrace()
     }
 }
-
 fun TextView.formattedDateJob(dateString: String) {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-    val outputFormat = SimpleDateFormat("dd.MMM.yyyy", Locale.getDefault())
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     try {
         val date = inputFormat.parse(dateString)
         val formattedDate = outputFormat.format(date)

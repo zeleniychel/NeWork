@@ -89,4 +89,16 @@
         android:id="@+id/userWallFragment"
         android:name="ru.netology.nework.activity.WallFragment"
         android:label="UserWallFragment" />
+    <fragment
+        android:id="@+id/myWallFragment"
+        android:name="ru.netology.nework.activity.MyWallFragment"
+        android:label="MyWallFragment" >
+        <action
+            android:id="@+id/action_myWallFragment_to_newJobFragment"
+            app:destination="@id/newJobFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newJobFragment"
+        android:name="ru.netology.nework.activity.NewJobFragment"
+        android:label="NewJobFragment" />
 </navigation>

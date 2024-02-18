@@ -89,7 +89,8 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.signout -> {
-                        appAuth.removeAuth()
+                        findNavController(R.id.container).navigate(R.id.myWallFragment)
+//                        appAuth.removeAuth()
                         true
                     }
 

@@ -1,5 +1,6 @@
 package ru.netology.nework.adapter.job
 
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nework.databinding.CardJobBinding
 import ru.netology.nework.model.Job
@@ -14,8 +15,13 @@ class JobViewHolder(
             position.text = job.position
             company.text = job.name
             start.formattedDateJob(job.start)
-            if (job.finish != null) {
-                finish.formattedDateJob(job.finish)
+            job.finish?.let {
+                finish.formattedDateJob(it)
+
+            }
+            job.link?.let {
+                link.text = it
+                link.visibility = View.VISIBLE
             }
 
         }

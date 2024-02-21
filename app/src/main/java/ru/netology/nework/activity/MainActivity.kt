@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -35,7 +36,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
         navController = navHostFragment.navController
         setSupportActionBar(binding.topAppBar)
-        setupActionBarWithNavController(navController)
 
 
         binding.bottomNavMenu.setOnItemSelectedListener {
@@ -53,12 +53,20 @@ class MainActivity : AppCompatActivity() {
                 R.id.newEventFragment,
                 R.id.newPostFragment,
                 R.id.postFragment,
-                R.id.eventFragment -> {
+                R.id.userWallFragment,
+                R.id.myWallFragment,
+                R.id.newJobFragment,
+                R.id.mapFragment,
+                R.id.checkUsersFragment,
+                R.id.eventFragment,
+                R.id.usersFragment -> {
                     binding.bottomNavMenu.visibility = View.GONE
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
 
                 else -> {
                     binding.bottomNavMenu.visibility = View.VISIBLE
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
             }
         }
@@ -87,10 +95,14 @@ class MainActivity : AppCompatActivity() {
                         findNavController(R.id.container).navigate(R.id.signUpFragment)
                         true
                     }
+                    R.id.account->{
+                        findNavController(R.id.container).navigate(R.id.myWallFragment)
+                        true
+                    }
 
                     R.id.signout -> {
                         findNavController(R.id.container).navigate(R.id.myWallFragment)
-//                        appAuth.removeAuth()
+                        appAuth.removeAuth()
                         true
                     }
 

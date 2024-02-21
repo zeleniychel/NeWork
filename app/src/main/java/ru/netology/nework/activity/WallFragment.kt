@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -39,11 +41,12 @@ class WallFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
         lifecycle.addObserver(observer)
         val binding = FragmentUserWallBinding.inflate(layoutInflater)
         val userArg = arguments?.getParcelableCompat<UserResponse>("key")
+        val toolbar = (activity as AppCompatActivity).findViewById<Toolbar>(R.id.topAppBar)
+        toolbar.title = "${userArg?.name}/${userArg?.login}"
+        toolbar.menu.clear()
         val adapterPost = PostAdapter(object : PostInteractionListener {
 
             override fun onMedia(post: Post) {
@@ -71,7 +74,7 @@ class WallFragment : Fragment() {
 
             override fun onPost(post: Post) {
                 findNavController().navigate(
-                    R.id.action_postsFeedFragment_to_postFragment,
+                    R.id.action_userWallFragment_to_postFragment,
                     bundleOf("key" to post)
                 )
 

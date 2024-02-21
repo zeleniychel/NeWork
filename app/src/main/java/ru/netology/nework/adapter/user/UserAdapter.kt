@@ -9,12 +9,13 @@ import ru.netology.nework.model.UserResponse
 
 class UserAdapter (
     private val userInteractionListener: UserInteractionListener,
+    private val checkBox: Boolean?
 ) : ListAdapter<UserResponse, UserViewHolder>(UserDiffCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = CardUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserViewHolder(binding, userInteractionListener)
+        return UserViewHolder(binding, userInteractionListener,checkBox)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {

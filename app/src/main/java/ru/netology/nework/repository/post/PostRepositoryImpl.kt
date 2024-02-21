@@ -43,6 +43,19 @@ class PostRepositoryImpl @Inject constructor(
 
     }
 
+    override suspend fun removePostById(id: Long) {
+        try {
+            val response = api.removePostById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
     override suspend fun savePost(post: Post) {
         try {
             val response = api.savePost(post)

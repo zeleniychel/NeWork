@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -30,6 +31,9 @@ class NewJobFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val toolbar = (activity as MainActivity).findViewById<Toolbar>(R.id.topAppBar)
+        toolbar.title = getString(R.string.new_job)
+        toolbar.menu.clear()
 
         val binding = FragmentNewJobBinding.inflate(layoutInflater)
         var startDate: String? = null

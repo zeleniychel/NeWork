@@ -18,11 +18,17 @@ class UsersViewModel@Inject constructor(
     private val _data = MutableLiveData<List<UserResponse>>(emptyList())
     val data: LiveData<List<UserResponse>> = _data
 
+    private val _users = MutableLiveData<List<Long>>(emptyList())
+    val users: LiveData<List<Long>> = _users
+
     init {
         getUsers()
     }
 
     private fun getUsers() = viewModelScope.launch{
         _data.value = repository.getUsers()
+    }
+    fun saveUsers(users: List<Long>) = viewModelScope.launch {
+        _users.value = users
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,7 +22,6 @@ import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentPostBinding
 import ru.netology.nework.mediaplayer.MediaLifecyclerObserver
 import ru.netology.nework.model.AttachmentType
-import ru.netology.nework.model.Coordinates
 import ru.netology.nework.model.Post
 import ru.netology.nework.util.getParcelableCompat
 import ru.netology.nework.viewmodel.PostsViewModel
@@ -42,6 +42,9 @@ class PostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val toolbar = (activity as MainActivity).findViewById<Toolbar>(R.id.topAppBar)
+        toolbar.title = getString(R.string.post)
+        toolbar.menu.clear()
         lifecycle.addObserver(observer)
         val postArg = arguments?.getParcelableCompat<Post>("key")
         val binding = FragmentPostBinding.inflate(layoutInflater)
@@ -108,6 +111,15 @@ class PostFragment : Fragment() {
                 R.id.action_postFragment_to_usersFragment,
                 bundleOf("men" to postArg)
             )
+        }
+        toolbar.inflateMenu(R.menu.share_menu)
+        toolbar.setOnMenuItemClickListener{item ->
+            when(item.itemId){
+                R.id.share ->{
+                    true
+                }
+                else -> false
+            }
         }
 
         return binding.root

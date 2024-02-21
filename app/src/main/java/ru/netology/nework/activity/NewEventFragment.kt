@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
@@ -19,9 +22,9 @@ import ru.netology.nework.databinding.FragmentNewEventBinding
 import ru.netology.nework.viewmodel.PostsViewModel
 
 @AndroidEntryPoint
-class NewEventFragment: Fragment() {
+class NewEventFragment : Fragment() {
 
-    private val viewModel: PostsViewModel by activityViewModels()
+    private val viewModel by viewModels<PostsViewModel>()
     private val photoResultContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -38,11 +41,15 @@ class NewEventFragment: Fragment() {
                 }
             }
         }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val toolbar = (activity as MainActivity).findViewById<Toolbar>(R.id.topAppBar)
+        toolbar.title = getString(R.string.new_event)
+        toolbar.menu.clear()
 
         val binding = FragmentNewEventBinding.inflate(layoutInflater)
 
@@ -66,6 +73,17 @@ class NewEventFragment: Fragment() {
 
         binding.remove.setOnClickListener {
             viewModel.setPhoto(null, null)
+        }
+        toolbar.inflateMenu(R.menu.save_menu)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.save -> {
+                    findNavController().navigateUp()
+                    true
+                }
+
+                else -> false
+            }
         }
 
         return binding.root

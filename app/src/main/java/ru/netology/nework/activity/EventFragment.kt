@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -41,6 +42,10 @@ class EventFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val toolbar = (activity as MainActivity).findViewById<Toolbar>(R.id.topAppBar)
+        toolbar.title = getString(R.string.event)
+        toolbar.menu.clear()
+
         lifecycle.addObserver(observer)
         val eventArg = arguments?.getParcelableCompat<Event>("key")
         val binding = FragmentEventBinding.inflate(layoutInflater)
@@ -113,6 +118,15 @@ class EventFragment: Fragment() {
                 R.id.action_eventFragment_to_usersFragment,
                 bundleOf("speak" to eventArg)
             )
+        }
+        toolbar.inflateMenu(R.menu.share_menu)
+        toolbar.setOnMenuItemClickListener{item ->
+            when(item.itemId){
+                R.id.share ->{
+                    true
+                }
+                else -> false
+            }
         }
 
         return binding.root

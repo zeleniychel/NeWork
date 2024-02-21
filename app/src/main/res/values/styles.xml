@@ -4,9 +4,7 @@
     <style name="Widget.AppTheme.AppBar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:background">#FEF7FF</item>
         <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Toolbar.Popup.Primary</item>
-        <item name="materialCalendarFullscreenTheme">
-            @style/ThemeOverlay.MaterialComponents.MaterialCalendar
-        </item>
+        <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
     </style>
 
     <style name="MyCustomButtonStyle" parent="Widget.AppCompat.Button">
@@ -28,6 +26,10 @@
         <item name="colorSurfaceContainerHigh">@color/magnolia</item>
         <item name="colorOnSurfaceVariant">@color/black</item>
         <item name="colorOutlineVariant">#CAC4D0</item>
+    </style>
+
+    <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_account_circle_24</item>
     </style>
 
 </resources>

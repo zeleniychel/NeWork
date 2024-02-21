@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,13 +15,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.activity.dialog.LoginDialog
 import ru.netology.nework.adapter.job.JobAdapter
+import ru.netology.nework.adapter.job.myjob.MyJobAdapter
+import ru.netology.nework.adapter.job.myjob.MyJobInteractionListener
 import ru.netology.nework.adapter.post.PostAdapter
 import ru.netology.nework.adapter.post.PostInteractionListener
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentMyWallBinding
 import ru.netology.nework.mediaplayer.MediaLifecyclerObserver
 import ru.netology.nework.model.AttachmentType
+import ru.netology.nework.model.Job
 import ru.netology.nework.model.Post
+import ru.netology.nework.util.load
+import ru.netology.nework.util.loadAttachment
 import ru.netology.nework.viewmodel.MyWallViewModel
 import javax.inject.Inject
 
@@ -37,7 +43,9 @@ class MyWallFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        val toolbar = (activity as MainActivity).findViewById<Toolbar>(R.id.topAppBar)
+        toolbar.title = getString(R.string.you)
+        toolbar.menu.clear()
 
         lifecycle.addObserver(observer)
         val binding = FragmentMyWallBinding.inflate(layoutInflater)
@@ -53,39 +61,45 @@ class MyWallFragment : Fragment() {
                             mediaPlayer?.setDataSource(post.attachment.url)
                             observer.play()
                         }
-
                     }
                 }
             }
 
             override fun onLike(post: Post) {
-                if (appAuth.authStateFlow.value.id == 0L) {
-                    LoginDialog().show(childFragmentManager, "")
-                } else {
-                    viewModel.likePostById(post)
-                }
+                viewModel.likePostById(post)
             }
 
             override fun onPost(post: Post) {
                 findNavController().navigate(
-                    R.id.action_postsFeedFragment_to_postFragment,
+                    R.id.action_myWallFragment_to_postFragment,
                     bundleOf("key" to post)
                 )
 
             }
         })
 
-        val adapterJob = JobAdapter()
+        val adapterJob = MyJobAdapter(object : MyJobInteractionListener {
+            override fun onRemove(job: Job) {
+                viewModel.deleteMyJob(job.id)
+            }
+        })
 
-
-
+        toolbar.inflateMenu(R.menu.logout_menu)
+        toolbar.setOnMenuItemClickListener{item ->
+            when(item.itemId){
+                R.id.logoutButton ->{
+                    appAuth.removeAuth()
+                    true
+                }
+                else -> false
+            }
+        }
 
         binding.wallList.adapter = adapterPost
 
-        binding.fab.setOnClickListener{
+        binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_myWallFragment_to_newJobFragment)
         }
-
 
         viewModel.data.observe(viewLifecycleOwner) {
             adapterPost.submitList(it)
@@ -94,17 +108,16 @@ class MyWallFragment : Fragment() {
         viewModel.dataJobs.observe(viewLifecycleOwner) {
             adapterJob.submitList(it)
         }
-        viewModel.getMyWall()
-        viewModel.getMyJobs()
 
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when(tab?.position!!){
-                    0 ->{
+                when (tab?.position!!) {
+                    0 -> {
                         binding.wallList.adapter = adapterPost
                         binding.fab.visibility = View.GONE
                     }
-                    1 ->{
+
+                    1 -> {
                         binding.wallList.adapter = adapterJob
                         binding.fab.visibility = View.VISIBLE
 
@@ -119,10 +132,6 @@ class MyWallFragment : Fragment() {
             }
 
         })
-
-
-
-
 
         return binding.root
     }

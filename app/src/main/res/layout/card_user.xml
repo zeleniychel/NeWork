@@ -8,6 +8,18 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
     android:background="@drawable/border">
+    
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="20dp"
+        app:buttonIconTint="@color/white"
+        app:buttonTint="@color/purple"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/avatar"

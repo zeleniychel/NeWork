@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_usersFeedFragment_to_userWallFragment"
             app:destination="@id/userWallFragment" />
+        <action
+            android:id="@+id/action_usersFeedFragment_to_myWallFragment"
+            app:destination="@id/myWallFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventFeedFragment"
@@ -72,6 +75,9 @@
         <action
             android:id="@+id/action_newPostFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_newPostFragment_to_checkUsersFragment"
+            app:destination="@id/checkUsersFragment" />
     </fragment>
     <fragment
         android:id="@+id/newEventFragment"
@@ -80,15 +86,22 @@
         <action
             android:id="@+id/action_newEventFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_newEventFragment_to_checkUsersFragment"
+            app:destination="@id/checkUsersFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="ru.netology.nework.MapFragment"
+        android:name="ru.netology.nework.activity.MapFragment"
         android:label="MapFragment" />
     <fragment
         android:id="@+id/userWallFragment"
         android:name="ru.netology.nework.activity.WallFragment"
-        android:label="UserWallFragment" />
+        android:label="UserWallFragment" >
+        <action
+            android:id="@+id/action_userWallFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myWallFragment"
         android:name="ru.netology.nework.activity.MyWallFragment"
@@ -96,9 +109,16 @@
         <action
             android:id="@+id/action_myWallFragment_to_newJobFragment"
             app:destination="@id/newJobFragment" />
+        <action
+            android:id="@+id/action_myWallFragment_to_postFragment"
+            app:destination="@id/postFragment" />
     </fragment>
     <fragment
         android:id="@+id/newJobFragment"
         android:name="ru.netology.nework.activity.NewJobFragment"
         android:label="NewJobFragment" />
+    <fragment
+        android:id="@+id/checkUsersFragment"
+        android:name="ru.netology.nework.activity.CheckUsersFragment"
+        android:label="CheckUsersFragment" />
 </navigation>

@@ -1,16 +1,19 @@
-package ru.netology.nework
+package ru.netology.nework.activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.InputListener
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.mapview.MapView
+import ru.netology.nework.R
 import ru.netology.nework.databinding.FragmentMapBinding
 
 class MapFragment : Fragment() {
@@ -21,7 +24,9 @@ class MapFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        val toolbar = (activity as MainActivity).findViewById<Toolbar>(R.id.topAppBar)
+        toolbar.title = getString(R.string.map)
+        toolbar.menu.clear()
 
         val binding = FragmentMapBinding.inflate(layoutInflater)
 
@@ -47,6 +52,22 @@ class MapFragment : Fragment() {
             }
         }
         mapView.mapWindow.map.addInputListener(inputListener)
+
+
+
+
+        toolbar.inflateMenu(R.menu.save_menu)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.save -> {
+                    findNavController().navigateUp()
+                    true
+                }
+
+                else -> false
+            }
+        }
+
 
 
 

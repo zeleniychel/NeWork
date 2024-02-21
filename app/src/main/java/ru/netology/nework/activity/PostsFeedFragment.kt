@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +20,7 @@ import ru.netology.nework.databinding.FragmentFeedBinding
 import ru.netology.nework.mediaplayer.MediaLifecyclerObserver
 import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Post
+import ru.netology.nework.viewmodel.AuthViewModel
 import ru.netology.nework.viewmodel.PostsViewModel
 import javax.inject.Inject
 
@@ -25,6 +28,7 @@ import javax.inject.Inject
 class PostsFeedFragment : Fragment() {
 
     private val viewModel by viewModels<PostsViewModel>()
+    private val authViewModel by viewModels<AuthViewModel>()
     private val observer = MediaLifecyclerObserver()
 
     @Inject
@@ -35,6 +39,9 @@ class PostsFeedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val toolbar = (activity as AppCompatActivity).findViewById<Toolbar>(R.id.topAppBar)
+        toolbar.title = getString(R.string.app_name)
+        toolbar.menu.clear()
         lifecycle.addObserver(observer)
         val binding = FragmentFeedBinding.inflate(layoutInflater)
 
@@ -63,6 +70,14 @@ class PostsFeedFragment : Fragment() {
                 }
             }
 
+            override fun onEdit(post: Post) {
+                super.onEdit(post)
+            }
+
+            override fun onRemove(post: Post) {
+                viewModel.removePostById(post.id)
+            }
+
             override fun onPost(post: Post) {
                 findNavController().navigate(
                     R.id.action_postsFeedFragment_to_postFragment,
@@ -71,6 +86,7 @@ class PostsFeedFragment : Fragment() {
 
             }
         })
+
         binding.fab.apply {
             visibility = View.VISIBLE
             setOnClickListener {
@@ -87,7 +103,34 @@ class PostsFeedFragment : Fragment() {
             adapter.submitList(it)
         }
 
+        toolbar.inflateMenu(R.menu.menu_main)
+        toolbar.menu.setGroupVisible(R.id.authenticated, authViewModel.authenticated)
+        toolbar.menu.setGroupVisible(R.id.unauthenticated, !authViewModel.authenticated)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.signin -> {
+                    findNavController().navigate(R.id.signInFragment)
+                    true
+                }
 
+                R.id.signup -> {
+                    findNavController().navigate(R.id.signUpFragment)
+                    true
+                }
+
+                R.id.signout -> {
+
+                    appAuth.removeAuth()
+                    true
+                }
+                R.id.account -> {
+                    findNavController().navigate(R.id.myWallFragment)
+                    true
+                }
+
+                else -> false
+            }
+        }
 
         return binding.root
     }

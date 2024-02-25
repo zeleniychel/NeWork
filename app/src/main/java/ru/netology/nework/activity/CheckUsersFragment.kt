@@ -13,7 +13,6 @@ import ru.netology.nework.R
 import ru.netology.nework.adapter.user.UserAdapter
 import ru.netology.nework.adapter.user.UserInteractionListener
 import ru.netology.nework.databinding.FragmentFeedBinding
-import ru.netology.nework.viewmodel.PostsViewModel
 import ru.netology.nework.viewmodel.UsersViewModel
 
 @AndroidEntryPoint
@@ -34,7 +33,7 @@ class CheckUsersFragment : Fragment() {
         val adapter = UserAdapter(object : UserInteractionListener {
 
             override fun onCheck(userId: Long) {
-                if(users.any{it != userId}){
+                if (users.any { it == userId }) {
                     users.remove(userId)
                 } else {
                     users.add(userId)
@@ -50,13 +49,18 @@ class CheckUsersFragment : Fragment() {
         }
 
         toolbar.inflateMenu(R.menu.save_menu)
-        toolbar.setOnMenuItemClickListener{item ->
-            when(item.itemId){
-                R.id.save ->{
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.save -> {
+                    val list = Bundle().apply {
+                        putLongArray("list", users.toLongArray())
+                    }
+                    parentFragmentManager.setFragmentResult("key", list)
                     viewModel.saveUsers(users)
-
+                    findNavController().navigateUp()
                     true
                 }
+
                 else -> false
             }
         }

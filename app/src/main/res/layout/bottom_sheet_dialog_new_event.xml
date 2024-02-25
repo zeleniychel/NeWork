@@ -7,20 +7,23 @@
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/loginField"
+        android:id="@+id/dateField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
         android:backgroundTint="#E6E0E9"
+        app:boxStrokeColor="@color/purple"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:hint="@string/date"
+        app:hintTextColor="@color/purple"
         app:endIconMode="custom"
         app:endIconDrawable="@drawable/ic_event_24"
         app:helperTextEnabled="true"
         app:helperText="MM/dd/yyyy HH:mm">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dateInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -42,12 +45,14 @@
             android:layout_width="wrap_content"
             android:text="@string/online"
             android:textSize="14sp"
+            style="@style/MyRadioButtonStyle"
             android:layout_height="wrap_content" />
 
         <RadioButton
             android:id="@+id/offlineButton"
             android:layout_width="wrap_content"
             android:text="@string/offline"
+            style="@style/MyRadioButtonStyle"
             android:textSize="14sp"
             android:layout_height="wrap_content" />
 

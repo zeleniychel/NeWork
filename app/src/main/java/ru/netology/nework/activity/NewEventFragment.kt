@@ -9,22 +9,25 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
+import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentNewEventBinding
-import ru.netology.nework.viewmodel.PostsViewModel
+import ru.netology.nework.viewmodel.EventViewModel
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class NewEventFragment : Fragment() {
 
-    private val viewModel by viewModels<PostsViewModel>()
+    @Inject
+    lateinit var appAuth: AppAuth
+    private val viewModel by viewModels<EventViewModel>()
+    private var usersList:List<Long>? = null
     private val photoResultContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -53,13 +56,17 @@ class NewEventFragment : Fragment() {
 
         val binding = FragmentNewEventBinding.inflate(layoutInflater)
 
+        val resultListener = FragmentResultListener { _ ,result ->
+            usersList = result.getLongArray("list")?.toList()
+        }
+        parentFragmentManager.setFragmentResultListener("key", viewLifecycleOwner, resultListener)
 
         viewModel.photo.observe(viewLifecycleOwner) {
             if (it == null) {
-                binding.imageContainer.isGone = true
+                binding.remove.visibility = View.GONE
                 return@observe
             }
-            binding.imageContainer.isVisible = true
+            binding.remove.visibility = View.VISIBLE
             binding.imagePreview.setImageURI(it.uri)
         }
 
@@ -73,7 +80,26 @@ class NewEventFragment : Fragment() {
 
         binding.remove.setOnClickListener {
             viewModel.setPhoto(null, null)
+            binding.remove.visibility = View.GONE
         }
+
+        binding.pickAttachment.setOnClickListener {
+
+        }
+
+        binding.fabEventDetails.setOnClickListener {
+            val bottomSheet = BottomSheetDialogFragmentNewEvent()
+            bottomSheet.show(parentFragmentManager, BottomSheetDialogFragmentNewEvent.TAG)
+        }
+
+        binding.choseSpeakers.setOnClickListener {
+            findNavController().navigate(R.id.action_newEventFragment_to_checkUsersFragment)
+        }
+
+        binding.makeMark.setOnClickListener {
+            findNavController().navigate(R.id.action_newEventFragment_to_mapFragment)
+        }
+
         toolbar.inflateMenu(R.menu.save_menu)
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {

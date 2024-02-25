@@ -21,6 +21,7 @@
                 android:background="@android:color/transparent"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:minHeight="48dp"
                 tools:text="123123123" />
 
             <FrameLayout
@@ -76,7 +77,8 @@
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        tools:ignore="VisualLintBottomAppBar">
 
         <ImageButton
             android:id="@+id/pickPhoto"
@@ -95,7 +97,7 @@
             android:src="@drawable/ic_attach_file_24" />
 
         <ImageButton
-            android:id="@+id/mention_user"
+            android:id="@+id/chose_speakers"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"
@@ -111,6 +113,7 @@
             android:src="@drawable/ic_location_pin_24" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_event_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

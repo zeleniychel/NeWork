@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -26,6 +27,7 @@ class NewPostFragment : Fragment() {
     @Inject
     lateinit var appAuth: AppAuth
     private val viewModel by viewModels<PostsViewModel>()
+    private var usersList:List<Long>? = null
     private val photoResultContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -49,10 +51,14 @@ class NewPostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val toolbar = (activity as MainActivity).findViewById<Toolbar>(R.id.topAppBar)
-        toolbar.title = getString(R.string.new_event)
+        toolbar.title = getString(R.string.new_post)
         toolbar.menu.clear()
 
         val binding = FragmentNewPostBinding.inflate(layoutInflater)
+        val resultListener = FragmentResultListener { requestKey ,result ->
+            usersList = result.getLongArray("list")?.toList()
+        }
+        parentFragmentManager.setFragmentResultListener("key", viewLifecycleOwner, resultListener)
 
 
         viewModel.photo.observe(viewLifecycleOwner) {
@@ -76,7 +82,12 @@ class NewPostFragment : Fragment() {
             viewModel.setPhoto(null, null)
             binding.remove.visibility = View.GONE
         }
-        binding.mentionUser.setOnClickListener {
+
+        binding.pickAttachment.setOnClickListener {
+
+        }
+
+        binding.choseMentioned.setOnClickListener {
             findNavController().navigate(R.id.action_newPostFragment_to_checkUsersFragment)
         }
 
@@ -88,7 +99,9 @@ class NewPostFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.save -> {
-                    viewModel.save(binding.editText.toString())
+                    viewModel.save(
+                        binding.editText.text.toString(),
+                        usersList)
                     findNavController().navigateUp()
                     true
                 }

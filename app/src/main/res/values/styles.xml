@@ -32,4 +32,9 @@
         <item name="android:src">@drawable/ic_account_circle_24</item>
     </style>
 
+    <style name="MyRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="buttonTint">@color/radio_button_color</item>
+
+    </style>
+
 </resources>

@@ -13,6 +13,7 @@ import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.InputListener
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.mapview.MapView
+import com.yandex.runtime.image.ImageProvider
 import ru.netology.nework.R
 import ru.netology.nework.databinding.FragmentMapBinding
 
@@ -44,7 +45,15 @@ class MapFragment : Fragment() {
             )
         }
         val inputListener = object : InputListener {
+
             override fun onMapTap(p0: Map, p1: Point) {
+                p0.mapObjects.clear()
+                p0.mapObjects.addPlacemark().apply {
+                    geometry = Point(
+                        p1.latitude,
+                        p1.longitude)
+                    setIcon(ImageProvider.fromResource(requireContext(),R.drawable.pin))
+                }
             }
 
             override fun onMapLongTap(p0: Map, p1: Point) {
@@ -52,9 +61,6 @@ class MapFragment : Fragment() {
             }
         }
         mapView.mapWindow.map.addInputListener(inputListener)
-
-
-
 
         toolbar.inflateMenu(R.menu.save_menu)
         toolbar.setOnMenuItemClickListener { item ->
@@ -67,9 +73,6 @@ class MapFragment : Fragment() {
                 else -> false
             }
         }
-
-
-
 
         return binding.root
     }

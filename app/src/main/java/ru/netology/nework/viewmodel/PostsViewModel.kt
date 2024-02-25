@@ -23,9 +23,6 @@ class PostsViewModel @Inject constructor(
     private val _photo = MutableLiveData<PhotoModel?>(null)
     val photo: LiveData<PhotoModel?> = _photo
 
-    private val _users = MutableLiveData<List<Long>>(emptyList())
-    val users: LiveData<List<Long>> = _users
-
     init {
         getPosts()
     }
@@ -42,15 +39,11 @@ class PostsViewModel @Inject constructor(
         _photo.value = PhotoModel(uri, file)
     }
 
-    fun save(text: String) = viewModelScope.launch {
+    fun save(text: String, mentionIds: List<Long>?) = viewModelScope.launch {
         repository.savePost(Post(
             content = text,
-            mentionIds = users.value ?: emptyList()
+            mentionIds = mentionIds?: emptyList()
         ))
-    }
-
-    fun saveUsers(users: List<Long>) = viewModelScope.launch {
-        _users.value = users
     }
 
     fun removePostById(id: Long) = viewModelScope.launch {

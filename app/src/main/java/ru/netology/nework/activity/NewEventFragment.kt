@@ -18,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentNewEventBinding
+import ru.netology.nework.model.EventType
 import ru.netology.nework.viewmodel.EventViewModel
 import javax.inject.Inject
 
@@ -27,7 +28,6 @@ class NewEventFragment : Fragment() {
     @Inject
     lateinit var appAuth: AppAuth
     private val viewModel by viewModels<EventViewModel>()
-    private var usersList:List<Long>? = null
     private val photoResultContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -57,9 +57,20 @@ class NewEventFragment : Fragment() {
         val binding = FragmentNewEventBinding.inflate(layoutInflater)
 
         val resultListener = FragmentResultListener { _ ,result ->
-            usersList = result.getLongArray("list")?.toList()
+            val list = result.getLongArray("list")?.toList()
+            list?.let { viewModel.setSpeakerIds(it) }
         }
+        val dateResultListener = FragmentResultListener{ _, result ->
+            val date = result.getString("date")?: ""
+            val type = result.getBoolean("type")
+            viewModel.setEventDate(date)
+            viewModel.setEventType(if (type) EventType.ONLINE else EventType.OFFLINE)
+
+        }
+
         parentFragmentManager.setFragmentResultListener("key", viewLifecycleOwner, resultListener)
+        childFragmentManager.setFragmentResultListener("resultKey", viewLifecycleOwner,dateResultListener)
+
 
         viewModel.photo.observe(viewLifecycleOwner) {
             if (it == null) {
@@ -89,7 +100,7 @@ class NewEventFragment : Fragment() {
 
         binding.fabEventDetails.setOnClickListener {
             val bottomSheet = BottomSheetDialogFragmentNewEvent()
-            bottomSheet.show(parentFragmentManager, BottomSheetDialogFragmentNewEvent.TAG)
+            bottomSheet.show(childFragmentManager, BottomSheetDialogFragmentNewEvent.TAG)
         }
 
         binding.choseSpeakers.setOnClickListener {

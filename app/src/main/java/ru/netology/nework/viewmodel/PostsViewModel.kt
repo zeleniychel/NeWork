@@ -7,10 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import ru.netology.nework.model.Attachment
+import ru.netology.nework.model.AttachmentType
+import ru.netology.nework.model.Coordinates
 import ru.netology.nework.model.PhotoModel
 import ru.netology.nework.model.Post
 import ru.netology.nework.repository.post.PostRepository
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +27,8 @@ class PostsViewModel @Inject constructor(
 
     private val _photo = MutableLiveData<PhotoModel?>(null)
     val photo: LiveData<PhotoModel?> = _photo
+
+    private var post = Post()
 
     init {
         getPosts()
@@ -42,11 +49,15 @@ class PostsViewModel @Inject constructor(
     fun save(text: String, mentionIds: List<Long>?) = viewModelScope.launch {
         repository.savePost(Post(
             content = text,
-            mentionIds = mentionIds?: emptyList()
+            published = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(Date())
         ))
     }
 
     fun removePostById(id: Long) = viewModelScope.launch {
         repository.removePostById(id)
+    }
+
+    fun setMentionIds(mentioned: List<Long>){
+        post = post.copy(mentionIds = mentioned)
     }
 }

@@ -60,11 +60,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginStart="16dp"
+                android:text="@string/looking_job"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/avatar"
-                app:layout_constraintTop_toBottomOf="@id/name"
-                android:text="@string/looking_job" />
+                app:layout_constraintTop_toBottomOf="@id/name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -178,7 +178,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="123123123" />
+                    tools:ignore="TouchTargetSizeCheck" />
 
                 <ImageView
                     android:id="@+id/user0"
@@ -251,8 +251,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="-12dp"
-                    android:visibility="invisible"
                     android:src="@drawable/ic_plus_circle_24"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -306,7 +306,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="123123123" />
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <ImageView
                         android:id="@+id/mentionedUser0"
@@ -379,8 +379,8 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="-12dp"
-                        android:visibility="visible"
                         android:src="@drawable/ic_plus_circle_24"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="packed"
@@ -396,10 +396,10 @@
 
         <com.yandex.mapkit.mapview.MapView
             android:id="@+id/mapView"
-            android:visibility="gone"
-            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="300dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
     </LinearLayout>
 
 </ScrollView>

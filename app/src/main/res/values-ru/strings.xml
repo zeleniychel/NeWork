@@ -37,7 +37,7 @@
     <string name="jobs">Jobs</string>
     <string name="event_type_offline">Оффлайн</string>
     <string name="event_type_online">Онлайн</string>
-    <string name="signout">Sign out</string>
+    <string name="sign_out">Sign out</string>
     <string name="invalid_username_or_password">Invalid username or password</string>
     <string name="invalid_login">A user with this username has already been registered</string>
     <string name="psswords_dont_match">Passwords don\'t match</string>
@@ -62,4 +62,6 @@
     <string name="registration">Registration</string>
     <string name="map">Map</string>
     <string name="new_post">New Post</string>
+    <string name="save">Save</string>
+    <string name="share">Share</string>
 </resources>

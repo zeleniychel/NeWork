@@ -9,7 +9,6 @@
         android:layout_height="wrap_content">
 
 
-
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,7 +18,8 @@
                 android:id="@+id/wallAvatar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_collapseMode="parallax" />
+                app:layout_collapseMode="parallax"
+                android:contentDescription="@string/avatar" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

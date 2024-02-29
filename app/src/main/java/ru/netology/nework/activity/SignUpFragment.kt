@@ -84,7 +84,7 @@ class SignUpFragment : Fragment() {
         binding.signUpButton.setOnClickListener {
             var errorFlag = false
             with(binding) {
-                if (loginField.text.toString().isEmpty()) {
+                if (loginFieldSignUp.text.toString().isEmpty()) {
                     loginLayout.error = getString(R.string.emptyloginfield)
                     errorFlag = true
                 }
@@ -93,7 +93,7 @@ class SignUpFragment : Fragment() {
                     errorFlag = true
                 }
                 if (passField.text.toString().isEmpty()) {
-                    passLayout.error = getString(R.string.emptypassfield)
+                    passLayoutSignUp.error = getString(R.string.emptypassfield)
                     errorFlag = true
                 }
                 if (repeatPassField.text.toString().isEmpty()) {
@@ -108,7 +108,7 @@ class SignUpFragment : Fragment() {
             if (!errorFlag) {
                 AndroidUtils.hideKeyboard(requireView())
                 viewModel.registerUser(
-                    binding.loginField.text.toString(),
+                    binding.loginFieldSignUp.text.toString(),
                     binding.repeatPassField.text.toString(),
                     binding.nameField.text.toString(),
                     viewModel.photo.value

@@ -64,5 +64,8 @@ class PostRepositoryImpl @Inject constructor(
             }
         } catch (e: IOException) {
             throw NetworkError
-    }}
+        } catch (e: Exception) {
+            throw e
+        }
+    }
 }

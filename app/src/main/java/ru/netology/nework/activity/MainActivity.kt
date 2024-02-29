@@ -7,12 +7,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
@@ -86,12 +84,12 @@ class MainActivity : AppCompatActivity() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
-                    R.id.signin -> {
+                    R.id.sign_in -> {
                         findNavController(R.id.container).navigate(R.id.signInFragment)
                         true
                     }
 
-                    R.id.signup -> {
+                    R.id.sign_up -> {
                         findNavController(R.id.container).navigate(R.id.signUpFragment)
                         true
                     }
@@ -100,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
 
-                    R.id.signout -> {
+                    R.id.sign_out -> {
                         findNavController(R.id.container).navigate(R.id.myWallFragment)
                         appAuth.removeAuth()
                         true

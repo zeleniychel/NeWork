@@ -14,26 +14,6 @@ import ru.netology.nework.repository.event.EventRepository
 import java.io.File
 import javax.inject.Inject
 
-private val empty = Event(
-    0,
-    0,
-    "",
-    null,
-    null,
-    "",
-    "",
-    "",
-    null,
-    EventType.ONLINE,
-    listOf(),
-    false,
-    listOf(),
-    listOf(),
-    false,
-    null,
-    null,
-    mapOf()
-)
 
 @HiltViewModel
 class EventViewModel @Inject constructor(
@@ -45,8 +25,7 @@ class EventViewModel @Inject constructor(
     private val _photo = MutableLiveData<PhotoModel?>(null)
     val photo: LiveData<PhotoModel?> = _photo
 
-    private val _event = MutableLiveData(empty)
-    val event: LiveData<Event> = _event
+    private var event = Event()
 
     init {
         getEvents()
@@ -64,10 +43,14 @@ class EventViewModel @Inject constructor(
         _photo.value = PhotoModel(uri, file)
     }
 
-    fun changeEventType(eventType: EventType){
-        _event.value = _event.value?.copy(type = eventType)
+    fun setEventType(eventType: EventType){
+        event = event.copy(type = eventType)
     }
-    fun changeEventDate(dateTime: String){
-        _event.value = _event.value?.copy(datetime = dateTime)
+    fun setEventDate(dateTime: String){
+        event = event.copy(datetime = dateTime)
+    }
+
+    fun setSpeakerIds(speakers: List<Long>){
+        event = event.copy(speakerIds = speakers)
     }
 }

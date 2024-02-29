@@ -26,8 +26,8 @@ class NewPostFragment : Fragment() {
 
     @Inject
     lateinit var appAuth: AppAuth
+    var list = listOf<Long>()
     private val viewModel by viewModels<PostsViewModel>()
-    private var usersList:List<Long>? = null
     private val photoResultContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -56,7 +56,8 @@ class NewPostFragment : Fragment() {
 
         val binding = FragmentNewPostBinding.inflate(layoutInflater)
         val resultListener = FragmentResultListener { requestKey ,result ->
-            usersList = result.getLongArray("list")?.toList()
+            list = result.getLongArray("list")?.toList()?: listOf()
+            list?.let { viewModel.setMentionIds(it) }
         }
         parentFragmentManager.setFragmentResultListener("key", viewLifecycleOwner, resultListener)
 
@@ -99,9 +100,7 @@ class NewPostFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.save -> {
-                    viewModel.save(
-                        binding.editText.text.toString(),
-                        usersList)
+                    viewModel.save(binding.editText.text.toString(),list)
                     findNavController().navigateUp()
                     true
                 }

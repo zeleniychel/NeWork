@@ -46,20 +46,20 @@ class SignInFragment : Fragment() {
         binding.signInButton.setOnClickListener {
             var errorFlag = false
             with(binding) {
-                if (loginField.text.toString().isEmpty()) {
+                if (loginFieldSignIn.text.toString().isEmpty()) {
                     loginLayout.error = getString(R.string.emptyloginfield)
                     errorFlag = true
                 }
 
                 if (passField.text.toString().isEmpty()) {
-                    passLayout.error = getString(R.string.emptypassfield)
+                    passLayoutSignIn.error = getString(R.string.emptypassfield)
                     errorFlag = true
                 }
             }
             if (!errorFlag) {
                 AndroidUtils.hideKeyboard(requireView())
                 viewModel.updateUser(
-                    binding.loginField.text.toString(),
+                    binding.loginFieldSignIn.text.toString(),
                     binding.passField.text.toString()
                 )
 

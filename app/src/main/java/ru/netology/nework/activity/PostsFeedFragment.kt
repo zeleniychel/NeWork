@@ -108,17 +108,17 @@ class PostsFeedFragment : Fragment() {
         toolbar.menu.setGroupVisible(R.id.unauthenticated, !authViewModel.authenticated)
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.signin -> {
+                R.id.sign_in -> {
                     findNavController().navigate(R.id.signInFragment)
                     true
                 }
 
-                R.id.signup -> {
+                R.id.sign_up -> {
                     findNavController().navigate(R.id.signUpFragment)
                     true
                 }
 
-                R.id.signout -> {
+                R.id.sign_out -> {
 
                     appAuth.removeAuth()
                     true

@@ -4,11 +4,11 @@
 
     <group android:id="@+id/unauthenticated">
         <item
-            android:id="@+id/signin"
+            android:id="@+id/sign_in"
             android:title="@string/sign_in"
             app:showAsAction="never" />
         <item
-            android:id="@+id/signup"
+            android:id="@+id/sign_up"
             android:title="@string/sign_up"
             app:showAsAction="never" />
     </group>
@@ -18,8 +18,8 @@
             android:title="@string/account"
             app:showAsAction="never" />
         <item
-            android:id="@+id/signout"
-            android:title="@string/signout"
+            android:id="@+id/sign_out"
+            android:title="@string/sign_out"
             app:showAsAction="never" />
     </group>
 </menu>

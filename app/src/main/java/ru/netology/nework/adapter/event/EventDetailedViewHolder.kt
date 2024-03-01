@@ -3,7 +3,9 @@ package ru.netology.nework.adapter.event
 import android.net.Uri
 import android.view.View
 import android.widget.MediaController
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import ru.netology.nework.R
 import ru.netology.nework.databinding.FragmentEventBinding
 import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Event
@@ -14,11 +16,8 @@ import ru.netology.nework.util.loadAttachment
 
 class EventDetailedViewHolder(
     private val binding: FragmentEventBinding,
-    private val eventInteractionListener: EventInteractionListener
+    private val eventInteractionListener: EventInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
-//
-//    @Inject
-//    lateinit var appAuth: AppAuth
 
     fun bind(event: Event) {
         binding.apply {
@@ -148,28 +147,28 @@ class EventDetailedViewHolder(
             root.setOnClickListener {
                 eventInteractionListener.onEvent(event)
             }
-//            if (appAuth.authStateFlow.value.id == post.authorId) {
-//                menu.visibility = View.VISIBLE
-//                menu.setOnClickListener {
-//                    PopupMenu(it.context, it).apply {
-//                        inflate((R.menu.options_post))
-//                        setOnMenuItemClickListener { item ->
-//                            when (item.itemId) {
-//                                R.id.remove -> {
-//                                    true
-//                                }
-//
-//                                R.id.edit -> {
-//
-//                                    true
-//                                }
-//
-//                                else -> false
-//                            }
-//                        }
-//                    }.show()
-//                }
-//            }
+                menu.visibility = View.VISIBLE
+                menu.setOnClickListener {
+                    PopupMenu(it.context, it).apply {
+                        inflate((R.menu.options_post))
+                        setOnMenuItemClickListener { item ->
+                            when (item.itemId) {
+                                R.id.remove -> {
+                                    eventInteractionListener.onRemove(event)
+                                    true
+                                }
+
+                                R.id.edit -> {
+                                    eventInteractionListener.onEdit(event)
+
+                                    true
+                                }
+
+                                else -> false
+                            }
+                        }
+                    }.show()
+                }
         }
     }
 }

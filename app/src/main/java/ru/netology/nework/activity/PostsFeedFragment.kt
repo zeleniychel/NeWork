@@ -71,7 +71,11 @@ class PostsFeedFragment : Fragment() {
             }
 
             override fun onEdit(post: Post) {
-                super.onEdit(post)
+                viewModel.edit(post)
+                findNavController().navigate(
+                    R.id.action_postsFeedFragment_to_newPostFragment,
+                    bundleOf("key" to post)
+                )
             }
 
             override fun onRemove(post: Post) {
@@ -85,7 +89,7 @@ class PostsFeedFragment : Fragment() {
                 )
 
             }
-        })
+        }, appAuth.authStateFlow.value.id)
 
         binding.fab.apply {
             visibility = View.VISIBLE
@@ -123,6 +127,7 @@ class PostsFeedFragment : Fragment() {
                     appAuth.removeAuth()
                     true
                 }
+
                 R.id.account -> {
                     findNavController().navigate(R.id.myWallFragment)
                     true

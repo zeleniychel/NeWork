@@ -12,7 +12,7 @@ data class Post(
     val authorAvatar: String? = null,
     val content: String="",
     val published: String="",
-    val coords: Coordinates = Coordinates(0.0,0.0),
+    val coords: Coordinates? = null,
     val link: String? = null,
     val mentionIds: List<Long> = listOf(),
     val mentionedMe: Boolean = false,

@@ -79,7 +79,7 @@ class WallFragment : Fragment() {
                 )
 
             }
-        })
+        },appAuth.authStateFlow.value.id)
 
         val adapterJob = JobAdapter()
 

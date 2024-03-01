@@ -9,12 +9,13 @@ import ru.netology.nework.model.Event
 
 class EventAdapter(
     private val eventInteractionListener: EventInteractionListener,
+    private val authId: Long?
 ) : ListAdapter<Event, EventViewHolder>(EventDiffCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val binding = CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EventViewHolder(binding, eventInteractionListener)
+        return EventViewHolder(binding, eventInteractionListener, authId)
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
@@ -18,7 +17,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentNewEventBinding
+import ru.netology.nework.model.Event
 import ru.netology.nework.model.EventType
+import ru.netology.nework.util.Converter
+import ru.netology.nework.util.getParcelableCompat
 import ru.netology.nework.viewmodel.EventViewModel
 import javax.inject.Inject
 
@@ -33,15 +35,7 @@ class NewEventFragment : Fragment() {
             if (it.resultCode == Activity.RESULT_OK) {
                 val uri = it.data?.data ?: return@registerForActivityResult
                 val file = uri.toFile()
-                val fileExtension = file.extension.lowercase()
-                if (fileExtension == "jpeg" || fileExtension == "png") {
-                    viewModel.setPhoto(uri, file)
-                } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.avatar_format_error), Toast.LENGTH_SHORT
-                    ).show()
-                }
+                viewModel.setPhoto(uri, file)
             }
         }
 
@@ -55,21 +49,26 @@ class NewEventFragment : Fragment() {
         toolbar.menu.clear()
 
         val binding = FragmentNewEventBinding.inflate(layoutInflater)
-
-        val resultListener = FragmentResultListener { _ ,result ->
+        val eventArg = arguments?.getParcelableCompat<Event>("key")
+        val resultListener = FragmentResultListener { _, result ->
             val list = result.getLongArray("list")?.toList()
             list?.let { viewModel.setSpeakerIds(it) }
         }
-        val dateResultListener = FragmentResultListener{ _, result ->
-            val date = result.getString("date")?: ""
+
+
+        val dateResultListener = FragmentResultListener { _, result ->
+            val date = result.getString("date") ?: ""
             val type = result.getBoolean("type")
-            viewModel.setEventDate(date)
+            val formatDate = Converter.convertDateFormat(date)
+            viewModel.setEventDate(formatDate)
             viewModel.setEventType(if (type) EventType.ONLINE else EventType.OFFLINE)
 
         }
 
+
+
         parentFragmentManager.setFragmentResultListener("key", viewLifecycleOwner, resultListener)
-        childFragmentManager.setFragmentResultListener("resultKey", viewLifecycleOwner,dateResultListener)
+        childFragmentManager.setFragmentResultListener("resultKey", viewLifecycleOwner, dateResultListener)
 
 
         viewModel.photo.observe(viewLifecycleOwner) {
@@ -79,6 +78,7 @@ class NewEventFragment : Fragment() {
             }
             binding.remove.visibility = View.VISIBLE
             binding.imagePreview.setImageURI(it.uri)
+            binding.imagePreview.visibility = View.VISIBLE
         }
 
         binding.pickPhoto.setOnClickListener {
@@ -89,9 +89,13 @@ class NewEventFragment : Fragment() {
                 .createIntent(photoResultContract::launch)
         }
 
+        binding.editText.setText(eventArg?.content)
+        viewModel.edit(eventArg ?: Event())
+
         binding.remove.setOnClickListener {
             viewModel.setPhoto(null, null)
             binding.remove.visibility = View.GONE
+            binding.imagePreview.visibility = View.GONE
         }
 
         binding.pickAttachment.setOnClickListener {
@@ -115,6 +119,7 @@ class NewEventFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.save -> {
+                    viewModel.save(binding.editText.text.toString())
                     findNavController().navigateUp()
                     true
                 }

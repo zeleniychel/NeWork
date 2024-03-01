@@ -3,7 +3,9 @@ package ru.netology.nework.adapter.event
 import android.net.Uri
 import android.view.View
 import android.widget.MediaController
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import ru.netology.nework.R
 import ru.netology.nework.databinding.CardEventBinding
 import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Event
@@ -13,11 +15,9 @@ import ru.netology.nework.util.loadAttachment
 
 class EventViewHolder(
     private val binding: CardEventBinding,
-    private val eventInteractionListener: EventInteractionListener
+    private val eventInteractionListener: EventInteractionListener,
+    private val authId: Long?
 ) : RecyclerView.ViewHolder(binding.root) {
-//
-//    @Inject
-//    lateinit var appAuth: AppAuth
 
     fun bind(event: Event) {
         binding.apply {
@@ -85,29 +85,30 @@ class EventViewHolder(
             root.setOnClickListener {
                 eventInteractionListener.onEvent(event)
             }
+            if (authId == event.authorId) {
+                menu.visibility = View.VISIBLE
+                menu.setOnClickListener {
+                    PopupMenu(it.context, it).apply {
+                        inflate((R.menu.options_post))
+                        setOnMenuItemClickListener { item ->
+                            when (item.itemId) {
+                                R.id.remove -> {
+                                    eventInteractionListener.onRemove(event)
+                                    true
+                                }
 
-//            if (appAuth.authStateFlow.value.id == post.authorId) {
-//                menu.visibility = View.VISIBLE
-//                menu.setOnClickListener {
-//                    PopupMenu(it.context, it).apply {
-//                        inflate((R.menu.options_post))
-//                        setOnMenuItemClickListener { item ->
-//                            when (item.itemId) {
-//                                R.id.remove -> {
-//                                    true
-//                                }
-//
-//                                R.id.edit -> {
-//
-//                                    true
-//                                }
-//
-//                                else -> false
-//                            }
-//                        }
-//                    }.show()
-//                }
-//            }
+                                R.id.edit -> {
+                                    eventInteractionListener.onEdit(event)
+
+                                    true
+                                }
+
+                                else -> false
+                            }
+                        }
+                    }.show()
+                }
+            }
         }
     }
 }

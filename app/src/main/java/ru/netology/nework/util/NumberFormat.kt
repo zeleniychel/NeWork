@@ -16,6 +16,13 @@ object Converter {
             else -> number.toString()
         }
     }
+    fun convertDateFormat(inputDate: String): String {
+        val formatterInput = SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault())
+        val formatterOutput = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val date = formatterInput.parse(inputDate)
+        val formattedDate = formatterOutput.format(date)
+        return formattedDate
+    }
 }
 fun TextView.formattedDate(dateString: String) {
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())

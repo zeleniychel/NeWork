@@ -52,28 +52,32 @@ class PostFragment : Fragment() {
         MapKitFactory.initialize(requireContext())
         mapView = binding.mapView
 
-        if (postArg?.coords != null){
+        if (postArg?.coords != null) {
             mapView.visibility = View.VISIBLE
             mapView.mapWindow.map.apply {
                 move(
                     CameraPosition(
                         Point(
                             postArg.coords.lat,
-                            postArg.coords.long),
+                            postArg.coords.long
+                        ),
                         17.0F,
                         0.0F,
-                        0.0F))
+                        0.0F
+                    )
+                )
                 mapObjects.addPlacemark().apply {
                     geometry = Point(
                         postArg.coords.lat,
-                        postArg.coords.long)
-                    setIcon(ImageProvider.fromResource(requireContext(),R.drawable.pin))
+                        postArg.coords.long
+                    )
+                    setIcon(ImageProvider.fromResource(requireContext(), R.drawable.pin))
                 }
             }
         }
 
 
-            val holder = PostDetailedViewHolder (binding, object : PostInteractionListener {
+        val holder = PostDetailedViewHolder(binding, object : PostInteractionListener {
 
             override fun onMedia(post: Post) {
                 if (post.attachment?.type == AttachmentType.AUDIO) {
@@ -93,12 +97,27 @@ class PostFragment : Fragment() {
             override fun onLike(post: Post) {
                 viewModel.likePostById(post)
             }
+            override fun onEdit(post: Post) {
+                viewModel.edit(post)
+                findNavController().navigate(
+                    R.id.action_postFragment_to_newPostFragment,
+                    bundleOf("key" to post)
+                )
+            }
+
+            override fun onRemove(post: Post) {
+                viewModel.removePostById(post.id)
+            }
         })
 
         holder.bind(postArg ?: Post())
         viewModel.data.observe(viewLifecycleOwner) {
             holder.bind(it.find { (id) -> id == postArg?.id } ?: return@observe)
         }
+        if (appAuth.authStateFlow.value.id == postArg?.authorId){
+            binding.menu.visibility = View.VISIBLE
+        }
+
 
         binding.usersList.setOnClickListener {
             findNavController().navigate(
@@ -113,11 +132,12 @@ class PostFragment : Fragment() {
             )
         }
         toolbar.inflateMenu(R.menu.share_menu)
-        toolbar.setOnMenuItemClickListener{item ->
-            when(item.itemId){
-                R.id.share ->{
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.share -> {
                     true
                 }
+
                 else -> false
             }
         }

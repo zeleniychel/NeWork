@@ -21,6 +21,10 @@ class MyWallViewModel @Inject constructor(
     private val _dataJobs = MutableLiveData<List<Job>>(emptyList())
     val dataJobs: LiveData<List<Job>> = _dataJobs
 
+    init {
+        getMyWall()
+        getMyJobs()
+    }
 
     fun getMyWall() = viewModelScope.launch {
         _data.value = repository.getMyWall()

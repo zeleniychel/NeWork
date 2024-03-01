@@ -7,9 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import ru.netology.nework.model.Attachment
-import ru.netology.nework.model.AttachmentType
-import ru.netology.nework.model.Coordinates
 import ru.netology.nework.model.PhotoModel
 import ru.netology.nework.model.Post
 import ru.netology.nework.repository.post.PostRepository
@@ -28,7 +25,7 @@ class PostsViewModel @Inject constructor(
     private val _photo = MutableLiveData<PhotoModel?>(null)
     val photo: LiveData<PhotoModel?> = _photo
 
-    private var post = Post()
+    private var post = MutableLiveData(Post())
 
     init {
         getPosts()
@@ -46,18 +43,32 @@ class PostsViewModel @Inject constructor(
         _photo.value = PhotoModel(uri, file)
     }
 
-    fun save(text: String, mentionIds: List<Long>?) = viewModelScope.launch {
-        repository.savePost(Post(
-            content = text,
-            published = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(Date())
-        ))
+    fun save(text: String) {
+        val content = text.trim()
+        post.value?.let {
+            if (it.content == content) {
+                return
+            }
+            post.value = it.copy(content = text)
+        }
+        viewModelScope.launch {
+            if (_photo.value == null) {
+                post.value?.let { repository.savePost(it) }
+            } else {
+                post.value?.let { repository.savePostWithAttachment(it, _photo.value!!) }
+            }
+        }
+    }
+
+    fun edit(postEdit: Post) {
+        post.value = postEdit.copy(published = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(Date()))
     }
 
     fun removePostById(id: Long) = viewModelScope.launch {
         repository.removePostById(id)
     }
 
-    fun setMentionIds(mentioned: List<Long>){
-        post = post.copy(mentionIds = mentioned)
+    fun setMentionIds(mentioned: List<Long>) {
+        post.value = post.value?.copy(mentionIds = mentioned)
     }
 }

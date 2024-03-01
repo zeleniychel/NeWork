@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toFile
@@ -18,6 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentNewPostBinding
+import ru.netology.nework.model.Post
+import ru.netology.nework.util.getParcelableCompat
 import ru.netology.nework.viewmodel.PostsViewModel
 import javax.inject.Inject
 
@@ -26,22 +27,13 @@ class NewPostFragment : Fragment() {
 
     @Inject
     lateinit var appAuth: AppAuth
-    var list = listOf<Long>()
     private val viewModel by viewModels<PostsViewModel>()
     private val photoResultContract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val uri = it.data?.data ?: return@registerForActivityResult
                 val file = uri.toFile()
-                val fileExtension = file.extension.lowercase()
-                if (fileExtension == "jpeg" || fileExtension == "png") {
-                    viewModel.setPhoto(uri, file)
-                } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.avatar_format_error), Toast.LENGTH_SHORT
-                    ).show()
-                }
+                viewModel.setPhoto(uri, file)
             }
         }
 
@@ -55,9 +47,10 @@ class NewPostFragment : Fragment() {
         toolbar.menu.clear()
 
         val binding = FragmentNewPostBinding.inflate(layoutInflater)
+        val postArg = arguments?.getParcelableCompat<Post>("key")
         val resultListener = FragmentResultListener { requestKey ,result ->
-            list = result.getLongArray("list")?.toList()?: listOf()
-            list?.let { viewModel.setMentionIds(it) }
+            val list = result.getLongArray("list")?.toList()?: listOf()
+            list.let { viewModel.setMentionIds(it) }
         }
         parentFragmentManager.setFragmentResultListener("key", viewLifecycleOwner, resultListener)
 
@@ -69,6 +62,7 @@ class NewPostFragment : Fragment() {
             }
             binding.remove.visibility = View.VISIBLE
             binding.imagePreview.setImageURI(it.uri)
+            binding.imagePreview.visibility = View.VISIBLE
         }
 
         binding.pickPhoto.setOnClickListener {
@@ -79,9 +73,13 @@ class NewPostFragment : Fragment() {
                 .createIntent(photoResultContract::launch)
         }
 
+        binding.editText.setText(postArg?.content)
+        viewModel.edit(postArg?:Post())
+
         binding.remove.setOnClickListener {
             viewModel.setPhoto(null, null)
             binding.remove.visibility = View.GONE
+            binding.imagePreview.visibility = View.GONE
         }
 
         binding.pickAttachment.setOnClickListener {
@@ -100,7 +98,7 @@ class NewPostFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.save -> {
-                    viewModel.save(binding.editText.text.toString(),list)
+                    viewModel.save(binding.editText.text.toString())
                     findNavController().navigateUp()
                     true
                 }

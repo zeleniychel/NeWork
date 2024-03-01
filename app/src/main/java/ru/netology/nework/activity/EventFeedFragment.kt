@@ -76,7 +76,18 @@ class EventFeedFragment : Fragment() {
                     viewModel.likeEventById(event)
                 }
             }
-        })
+            override fun onEdit(event: Event) {
+                viewModel.edit(event)
+                findNavController().navigate(
+                    R.id.action_eventFeedFragment_to_newEventFragment,
+                    bundleOf("key" to event)
+                )
+            }
+
+            override fun onRemove(event: Event) {
+                viewModel.removeEventById(event.id)
+            }
+        }, appAuth.authStateFlow.value.id)
 
         binding.fab.apply {
             visibility = View.VISIBLE

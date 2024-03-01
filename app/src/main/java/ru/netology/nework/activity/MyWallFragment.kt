@@ -9,12 +9,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
-import ru.netology.nework.activity.dialog.LoginDialog
-import ru.netology.nework.adapter.job.JobAdapter
 import ru.netology.nework.adapter.job.myjob.MyJobAdapter
 import ru.netology.nework.adapter.job.myjob.MyJobInteractionListener
 import ru.netology.nework.adapter.post.PostAdapter
@@ -25,8 +22,6 @@ import ru.netology.nework.mediaplayer.MediaLifecyclerObserver
 import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Job
 import ru.netology.nework.model.Post
-import ru.netology.nework.util.load
-import ru.netology.nework.util.loadAttachment
 import ru.netology.nework.viewmodel.MyWallViewModel
 import javax.inject.Inject
 
@@ -74,9 +69,8 @@ class MyWallFragment : Fragment() {
                     R.id.action_myWallFragment_to_postFragment,
                     bundleOf("key" to post)
                 )
-
             }
-        })
+        },null)
 
         val adapterJob = MyJobAdapter(object : MyJobInteractionListener {
             override fun onRemove(job: Job) {

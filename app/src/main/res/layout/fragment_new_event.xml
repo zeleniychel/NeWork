@@ -15,14 +15,13 @@
 
             <EditText
                 android:id="@+id/editText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="16dp"
                 android:background="@android:color/transparent"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
-                android:minHeight="48dp"
-                tools:text="123123123" />
+                />
 
             <FrameLayout
                 android:id="@+id/imageContainer"
@@ -65,6 +64,7 @@
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="24dp"
                     android:backgroundTint="@color/purple"
+                    android:textColor="@color/white"
                     android:visibility="gone"
                     android:text="@string/remove" />
             </FrameLayout>

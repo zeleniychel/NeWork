@@ -94,11 +94,28 @@ class EventFragment: Fragment() {
             override fun onLike(event: Event) {
                 viewModel.likeEventById(event)
             }
+
+
+            override fun onEdit(event: Event) {
+                viewModel.edit(event)
+                findNavController().navigate(
+                    R.id.action_eventFragment_to_newEventFragment,
+                    bundleOf("key" to event)
+                )
+            }
+
+            override fun onRemove(event: Event) {
+                viewModel.removeEventById(event.id)
+            }
         })
 
         holder.bind(eventArg ?: Event())
         viewModel.data.observe(viewLifecycleOwner) {
             holder.bind(it.find { (id) -> id == eventArg?.id } ?: return@observe)
+        }
+
+        if (appAuth.authStateFlow.value.id == eventArg?.authorId){
+            binding.menu.visibility = View.VISIBLE
         }
 
         binding.usersList.setOnClickListener {

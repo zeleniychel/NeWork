@@ -11,5 +11,5 @@ interface MediaApi {
 
     @Multipart
     @POST("media")
-    suspend fun saveMedia(@Part part: MultipartBody.Part): Response<Media>
+    suspend fun saveMedia(@Part file: MultipartBody.Part): Response<Media>
 }

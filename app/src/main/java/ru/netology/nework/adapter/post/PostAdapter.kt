@@ -9,10 +9,11 @@ import ru.netology.nework.model.Post
 
 class PostAdapter(
     private val postInteractionListener: PostInteractionListener,
+    private val authId: Long?
 ) : ListAdapter<Post, PostViewHolder>(PostDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, postInteractionListener)
+        return PostViewHolder(binding, postInteractionListener, authId)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {

@@ -17,9 +17,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentNewPostBinding
+import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Post
 import ru.netology.nework.util.getParcelableCompat
 import ru.netology.nework.viewmodel.PostsViewModel
+import java.io.InputStream
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,6 +39,31 @@ class NewPostFragment : Fragment() {
             }
         }
 
+    private val openDocumentContract =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+            if (it != null) {
+                val contentResolver = context?.contentResolver
+                val mimeType = contentResolver?.getType(it)
+                var type: AttachmentType? = null
+                when {
+                    mimeType?.contains("audio") == true -> {
+                        type = AttachmentType.AUDIO
+                    }
+
+                    mimeType?.contains("video") == true -> {
+                        type = AttachmentType.VIDEO
+                    }
+                    mimeType?.contains("image") == true -> {
+                        type = AttachmentType.IMAGE
+                    }
+
+                    else -> null
+                }
+                val inputStream: InputStream? = context?.contentResolver?.openInputStream(it)
+                viewModel.setAttach(inputStream, type)
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,8 +75,8 @@ class NewPostFragment : Fragment() {
 
         val binding = FragmentNewPostBinding.inflate(layoutInflater)
         val postArg = arguments?.getParcelableCompat<Post>("key")
-        val resultListener = FragmentResultListener { requestKey ,result ->
-            val list = result.getLongArray("list")?.toList()?: listOf()
+        val resultListener = FragmentResultListener { _, result ->
+            val list = result.getLongArray("list")?.toList() ?: listOf()
             list.let { viewModel.setMentionIds(it) }
         }
         parentFragmentManager.setFragmentResultListener("key", viewLifecycleOwner, resultListener)
@@ -65,6 +92,24 @@ class NewPostFragment : Fragment() {
             binding.imagePreview.visibility = View.VISIBLE
         }
 
+        viewModel.attach.observe(viewLifecycleOwner) {
+            if (it == null) {
+                binding.remove.visibility = View.GONE
+                return@observe
+            }
+            if (it.type == AttachmentType.AUDIO) {
+                binding.audioPreview.visibility = View.VISIBLE
+            }
+            if (it.type == AttachmentType.AUDIO) {
+                binding.imagePreview.visibility = View.VISIBLE
+            }
+            if (it.type == AttachmentType.VIDEO) {
+                binding.videoPreview.visibility = View.VISIBLE
+            }
+            binding.remove.visibility = View.VISIBLE
+
+        }
+
         binding.pickPhoto.setOnClickListener {
             ImagePicker.Builder(this)
                 .crop()
@@ -73,17 +118,20 @@ class NewPostFragment : Fragment() {
                 .createIntent(photoResultContract::launch)
         }
 
+        binding.pickAttachment.setOnClickListener {
+            openDocumentContract.launch(arrayOf("audio/*","video/*"))
+        }
+
         binding.editText.setText(postArg?.content)
-        viewModel.edit(postArg?:Post())
+        viewModel.edit(postArg ?: Post())
 
         binding.remove.setOnClickListener {
             viewModel.setPhoto(null, null)
+            viewModel.setAttach(null, null)
             binding.remove.visibility = View.GONE
             binding.imagePreview.visibility = View.GONE
-        }
-
-        binding.pickAttachment.setOnClickListener {
-
+            binding.audioPreview.visibility = View.GONE
+            binding.videoPreview.visibility = View.GONE
         }
 
         binding.choseMentioned.setOnClickListener {

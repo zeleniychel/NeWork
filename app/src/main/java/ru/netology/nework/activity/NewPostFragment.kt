@@ -42,8 +42,7 @@ class NewPostFragment : Fragment() {
     private val openDocumentContract =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) {
             if (it != null) {
-                val contentResolver = context?.contentResolver
-                val mimeType = contentResolver?.getType(it)
+                val mimeType = context?.contentResolver?.getType(it)
                 var type: AttachmentType? = null
                 when {
                     mimeType?.contains("audio") == true -> {
@@ -53,6 +52,7 @@ class NewPostFragment : Fragment() {
                     mimeType?.contains("video") == true -> {
                         type = AttachmentType.VIDEO
                     }
+
                     mimeType?.contains("image") == true -> {
                         type = AttachmentType.IMAGE
                     }
@@ -100,7 +100,7 @@ class NewPostFragment : Fragment() {
             if (it.type == AttachmentType.AUDIO) {
                 binding.audioPreview.visibility = View.VISIBLE
             }
-            if (it.type == AttachmentType.AUDIO) {
+            if (it.type == AttachmentType.IMAGE) {
                 binding.imagePreview.visibility = View.VISIBLE
             }
             if (it.type == AttachmentType.VIDEO) {
@@ -119,7 +119,7 @@ class NewPostFragment : Fragment() {
         }
 
         binding.pickAttachment.setOnClickListener {
-            openDocumentContract.launch(arrayOf("audio/*","video/*"))
+            openDocumentContract.launch(arrayOf("image/*", "audio/*", "video/*"))
         }
 
         binding.editText.setText(postArg?.content)

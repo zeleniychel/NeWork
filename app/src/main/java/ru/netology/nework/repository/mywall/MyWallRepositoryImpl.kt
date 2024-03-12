@@ -1,9 +1,9 @@
 package ru.netology.nework.repository.mywall
 
-import ru.netology.nework.api.JobsApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import ru.netology.nework.api.MyJobApi
 import ru.netology.nework.api.MyWallApi
-import ru.netology.nework.api.WallApi
 import ru.netology.nework.error.ApiError
 import ru.netology.nework.error.NetworkError
 import ru.netology.nework.error.UnknownError
@@ -16,6 +16,13 @@ class MyWallRepositoryImpl @Inject constructor(
     private val apiWall: MyWallApi,
     private val apiJob: MyJobApi
 ) : MyWallRepository {
+    override val data = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        pagingSourceFactory = {
+            MyWallPagingSource(apiWall)
+        }
+    ).flow
+
     override suspend fun getMyWall(): List<Post> {
         try {
             val response = apiWall.getMyWall()

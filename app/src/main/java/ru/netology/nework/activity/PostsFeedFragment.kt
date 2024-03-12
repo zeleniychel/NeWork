@@ -9,8 +9,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.nework.R
 import ru.netology.nework.activity.dialog.LoginDialog
 import ru.netology.nework.adapter.post.PostInteractionListener
@@ -103,8 +106,10 @@ class PostsFeedFragment : Fragment() {
         }
 
         binding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        lifecycleScope.launch {
+            viewModel.data.collectLatest {
+                adapter.submitData(it)
+            }
         }
 
         toolbar.inflateMenu(R.menu.menu_main)

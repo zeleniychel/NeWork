@@ -5,8 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.PhotoModel
@@ -27,8 +29,6 @@ data class AttachModel(
 class PostsViewModel @Inject constructor(
     private val repository: PostRepository,
 ) : ViewModel() {
-    private val _data = MutableLiveData<List<Post>>(emptyList())
-    val data: LiveData<List<Post>> = _data
 
     private val _photo = MutableLiveData<PhotoModel?>(null)
     val photo: LiveData<PhotoModel?> = _photo
@@ -37,14 +37,15 @@ class PostsViewModel @Inject constructor(
     val attach: LiveData<AttachModel?> = _attach
 
     private var post = MutableLiveData(Post())
+    val data: Flow<PagingData<Post>> = repository.data
 
-    init {
-        getPosts()
-    }
+//    init {
+//        getPosts()
+//    }
 
-    private fun getPosts() = viewModelScope.launch {
-        _data.value = repository.getPosts()
-    }
+//    private fun getPosts() = viewModelScope.launch {
+//        _data.value = repository.getPosts()
+//    }
 
     fun likePostById(post: Post) = viewModelScope.launch {
         repository.likePostById(post)

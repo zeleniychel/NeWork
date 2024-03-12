@@ -9,9 +9,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.nework.R
 import ru.netology.nework.activity.dialog.LoginDialog
 import ru.netology.nework.adapter.job.JobAdapter
@@ -87,15 +90,19 @@ class WallFragment : Fragment() {
             binding.wallAvatar.loadAttachment(userArg.avatar)
         }
         binding.wallList.adapter = adapterPost
-        viewModel.data.observe(viewLifecycleOwner) {
-            adapterPost.submitList(it)
-        }
+//        viewModel.data.observe(viewLifecycleOwner) {
+//            adapterPost.submitList(it)
+//        }
 
         viewModel.dataJobs.observe(viewLifecycleOwner) {
             adapterJob.submitList(it)
         }
-        viewModel.getWall(userArg!!.id)
-        viewModel.getJobs(userArg.id)
+        lifecycleScope.launch {
+            viewModel.data.collectLatest {
+                adapterPost.submitData(it)
+            }
+        }
+        userArg?.let { viewModel.getJobs(it.id) }
 
         binding.tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {

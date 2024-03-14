@@ -20,6 +20,7 @@ import ru.netology.nework.databinding.FragmentNewPostBinding
 import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Post
 import ru.netology.nework.util.getParcelableCompat
+import ru.netology.nework.viewmodel.AttachModel
 import ru.netology.nework.viewmodel.PostsViewModel
 import java.io.InputStream
 import javax.inject.Inject
@@ -41,6 +42,7 @@ class NewPostFragment : Fragment() {
 
     private val openDocumentContract =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+            val file = it?.toFile()
             if (it != null) {
                 val mimeType = context?.contentResolver?.getType(it)
                 var type: AttachmentType? = null
@@ -60,7 +62,7 @@ class NewPostFragment : Fragment() {
                     else -> null
                 }
                 val inputStream: InputStream? = context?.contentResolver?.openInputStream(it)
-                viewModel.setAttach(inputStream, type)
+                viewModel.setAttach(AttachModel(inputStream, type,it,file))
             }
         }
 
@@ -101,9 +103,11 @@ class NewPostFragment : Fragment() {
                 binding.audioPreview.visibility = View.VISIBLE
             }
             if (it.type == AttachmentType.IMAGE) {
+                binding.imagePreview.setImageURI(viewModel.attach.value?.uri)
                 binding.imagePreview.visibility = View.VISIBLE
             }
             if (it.type == AttachmentType.VIDEO) {
+                binding.videoPreview.setVideoURI(viewModel.attach.value?.uri)
                 binding.videoPreview.visibility = View.VISIBLE
             }
             binding.remove.visibility = View.VISIBLE
@@ -127,7 +131,7 @@ class NewPostFragment : Fragment() {
 
         binding.remove.setOnClickListener {
             viewModel.setPhoto(null, null)
-            viewModel.setAttach(null, null)
+            viewModel.setAttach(AttachModel())
             binding.remove.visibility = View.GONE
             binding.imagePreview.visibility = View.GONE
             binding.audioPreview.visibility = View.GONE
@@ -147,7 +151,6 @@ class NewPostFragment : Fragment() {
             when (item.itemId) {
                 R.id.save -> {
                     viewModel.save(binding.editText.text.toString())
-                    findNavController().navigateUp()
                     true
                 }
 

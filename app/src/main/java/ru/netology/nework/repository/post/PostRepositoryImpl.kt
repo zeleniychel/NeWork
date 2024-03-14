@@ -98,23 +98,25 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun upload(attachment: AttachModel): Media {
         val emptyRequestBody: RequestBody = "".toRequestBody("multipart/form-data".toMediaTypeOrNull())
         var part: MultipartBody.Part = MultipartBody.Part.createFormData("empty_part", "", emptyRequestBody)
+        val bytes = attachment.inputStream?.readBytes()
+        val requestBody = attachment.inputStream?.readBytes()?.toRequestBody("multipart/form-data".toMediaTypeOrNull())
         if (attachment.inputStream != null) {
             when (attachment.type) {
                 AttachmentType.IMAGE -> part = MultipartBody.Part.createFormData(
                     "image",
-                    "myImage",
-                    attachment.inputStream.readBytes().toRequestBody("image/*".toMediaType())
+                    "myImagфывфывфыe.jpeg",
+                    requestBody!!
                 )
 
                 AttachmentType.AUDIO -> part = MultipartBody.Part.createFormData(
                     "audio",
-                    "myAudio",
+                    "myAudio.mp3",
                     attachment.inputStream.readBytes().toRequestBody("audio/*".toMediaType())
                 )
 
                 AttachmentType.VIDEO -> part = MultipartBody.Part.createFormData(
                     "video",
-                    "myVideo",
+                    "myVideo.mp4",
                     attachment.inputStream.readBytes().toRequestBody("video/*".toMediaType())
                 )
 

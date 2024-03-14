@@ -20,7 +20,9 @@ import javax.inject.Inject
 
 data class AttachModel(
     val inputStream: InputStream? = null,
-    val type: AttachmentType? = null
+    val type: AttachmentType? = null,
+    val uri: Uri? = null,
+    val file: File? = null
 )
 
 @HiltViewModel
@@ -54,8 +56,8 @@ class PostsViewModel @Inject constructor(
         _photo.value = PhotoModel(uri, file)
     }
 
-    fun setAttach(inputStream: InputStream?, type: AttachmentType?) {
-        _attach.value = AttachModel(inputStream, type)
+    fun setAttach(attachModel: AttachModel) {
+        _attach.value = attachModel
     }
 
     fun save(text: String) {
@@ -71,8 +73,9 @@ class PostsViewModel @Inject constructor(
             if (attachModel == null) {
                 post.value?.let { repository.savePost(it) }
             } else {
+//                val url = photo.value?.file?.let { repository.saveMedia(it) }
                 val url = repository.upload(attachModel)
-                post.value?.let { repository.savePostWithAttachment(it, url) }
+                post.value?.let { url?.let { it1 -> repository.savePostWithAttachment(it, it1) } }
             }
 
         }

@@ -55,7 +55,7 @@
                     android:contentDescription="@string/attachment"
                     android:padding="16dp"
                     android:visibility="gone"
-                    tools:src="@drawable/ic_play_circle_filled_24" />
+                    android:src="@drawable/ic_play_circle_filled_24" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/remove"

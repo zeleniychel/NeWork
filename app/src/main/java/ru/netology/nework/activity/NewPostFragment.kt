@@ -17,6 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentNewPostBinding
+import ru.netology.nework.model.AttachModel
+import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Post
 import ru.netology.nework.util.getParcelableCompat
 import ru.netology.nework.viewmodel.PostsViewModel
@@ -37,6 +39,32 @@ class NewPostFragment : Fragment() {
             }
         }
 
+    private val openDocumentContract =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+            if (it != null) {
+                val mimeType = context?.contentResolver?.getType(it)
+                var type: AttachmentType? = null
+                when {
+                    mimeType?.contains("audio") == true -> {
+                        type = AttachmentType.AUDIO
+                    }
+
+                    mimeType?.contains("video") == true -> {
+                        type = AttachmentType.VIDEO
+                    }
+
+                    mimeType?.contains("image") == true -> {
+                        type = AttachmentType.IMAGE
+                    }
+                }
+                val bytes =
+                    context?.contentResolver?.openInputStream(it)?.buffered()?.use { inputStream ->
+                        inputStream.readBytes()
+                    }
+                viewModel.setAttach(AttachModel(bytes, type, it))
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,8 +76,8 @@ class NewPostFragment : Fragment() {
 
         val binding = FragmentNewPostBinding.inflate(layoutInflater)
         val postArg = arguments?.getParcelableCompat<Post>("key")
-        val resultListener = FragmentResultListener { requestKey ,result ->
-            val list = result.getLongArray("list")?.toList()?: listOf()
+        val resultListener = FragmentResultListener { _, result ->
+            val list = result.getLongArray("list")?.toList() ?: listOf()
             list.let { viewModel.setMentionIds(it) }
         }
         parentFragmentManager.setFragmentResultListener("key", viewLifecycleOwner, resultListener)
@@ -65,25 +93,48 @@ class NewPostFragment : Fragment() {
             binding.imagePreview.visibility = View.VISIBLE
         }
 
+        viewModel.attach.observe(viewLifecycleOwner) {
+            if (it == null) {
+                binding.remove.visibility = View.GONE
+                return@observe
+            }
+            if (it.type == AttachmentType.AUDIO) {
+                binding.audioPreview.visibility = View.VISIBLE
+            }
+            if (it.type == AttachmentType.IMAGE) {
+                binding.imagePreview.setImageURI(viewModel.attach.value?.uri)
+                binding.imagePreview.visibility = View.VISIBLE
+            }
+            if (it.type == AttachmentType.VIDEO) {
+                binding.videoPreview.setVideoURI(viewModel.attach.value?.uri)
+                binding.videoPreview.visibility = View.VISIBLE
+            }
+            binding.remove.visibility = View.VISIBLE
+
+        }
+
         binding.pickPhoto.setOnClickListener {
             ImagePicker.Builder(this)
                 .crop()
-                .galleryOnly()
+                .cameraOnly()
                 .maxResultSize(2048, 2048)
                 .createIntent(photoResultContract::launch)
         }
 
+        binding.pickAttachment.setOnClickListener {
+            openDocumentContract.launch(arrayOf("image/*", "audio/*", "video/*"))
+        }
+
         binding.editText.setText(postArg?.content)
-        viewModel.edit(postArg?:Post())
+        viewModel.edit(postArg ?: Post())
 
         binding.remove.setOnClickListener {
             viewModel.setPhoto(null, null)
+            viewModel.setAttach(AttachModel())
             binding.remove.visibility = View.GONE
             binding.imagePreview.visibility = View.GONE
-        }
-
-        binding.pickAttachment.setOnClickListener {
-
+            binding.audioPreview.visibility = View.GONE
+            binding.videoPreview.visibility = View.GONE
         }
 
         binding.choseMentioned.setOnClickListener {
@@ -98,11 +149,9 @@ class NewPostFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.save -> {
-                    viewModel.save(binding.editText.text.toString())
-                    findNavController().navigateUp()
+                        viewModel.save(binding.editText.text.toString())
                     true
                 }
-
                 else -> false
             }
         }

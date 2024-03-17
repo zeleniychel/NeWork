@@ -8,22 +8,15 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.netology.nework.model.AttachModel
 import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.PhotoModel
 import ru.netology.nework.model.Post
 import ru.netology.nework.repository.post.PostRepository
 import java.io.File
-import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject
-
-data class AttachModel(
-    val inputStream: InputStream? = null,
-    val type: AttachmentType? = null,
-    val uri: Uri? = null,
-    val file: File? = null
-)
 
 @HiltViewModel
 class PostsViewModel @Inject constructor(
@@ -70,16 +63,20 @@ class PostsViewModel @Inject constructor(
         }
         viewModelScope.launch(Dispatchers.IO) {
             val attachModel = attach.value
-            if (attachModel == null) {
-                post.value?.let { repository.savePost(it) }
-            } else {
-//                val url = photo.value?.file?.let { repository.saveMedia(it) }
+            val photoModel = photo.value?.file
+            if (attachModel != null) {
                 val url = repository.upload(attachModel)
-                post.value?.let { url?.let { it1 -> repository.savePostWithAttachment(it, it1) } }
+                post.value?.let { repository.savePostWithAttachment(it, url, attach.value?.type!!) }
+            } else if (photoModel != null) {
+                val url = repository.saveMedia(photoModel)
+                post.value?.let { repository.savePostWithAttachment(it, url, AttachmentType.IMAGE) }
+                photo.value?.file?.let { repository.saveMedia(it) }
+            } else {
+                post.value?.let { repository.savePost(it) }
             }
-
         }
     }
+
     fun edit(postEdit: Post) {
         post.value =
             postEdit.copy(published = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(Date()))

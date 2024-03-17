@@ -17,12 +17,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentNewPostBinding
+import ru.netology.nework.model.AttachModel
 import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Post
 import ru.netology.nework.util.getParcelableCompat
-import ru.netology.nework.viewmodel.AttachModel
 import ru.netology.nework.viewmodel.PostsViewModel
-import java.io.InputStream
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -42,7 +41,6 @@ class NewPostFragment : Fragment() {
 
     private val openDocumentContract =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) {
-            val file = it?.toFile()
             if (it != null) {
                 val mimeType = context?.contentResolver?.getType(it)
                 var type: AttachmentType? = null
@@ -58,11 +56,12 @@ class NewPostFragment : Fragment() {
                     mimeType?.contains("image") == true -> {
                         type = AttachmentType.IMAGE
                     }
-
-                    else -> null
                 }
-                val inputStream: InputStream? = context?.contentResolver?.openInputStream(it)
-                viewModel.setAttach(AttachModel(inputStream, type,it,file))
+                val bytes =
+                    context?.contentResolver?.openInputStream(it)?.buffered()?.use { inputStream ->
+                        inputStream.readBytes()
+                    }
+                viewModel.setAttach(AttachModel(bytes, type, it))
             }
         }
 
@@ -117,7 +116,7 @@ class NewPostFragment : Fragment() {
         binding.pickPhoto.setOnClickListener {
             ImagePicker.Builder(this)
                 .crop()
-                .galleryOnly()
+                .cameraOnly()
                 .maxResultSize(2048, 2048)
                 .createIntent(photoResultContract::launch)
         }
@@ -150,10 +149,9 @@ class NewPostFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.save -> {
-                    viewModel.save(binding.editText.text.toString())
+                        viewModel.save(binding.editText.text.toString())
                     true
                 }
-
                 else -> false
             }
         }

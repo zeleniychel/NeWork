@@ -31,6 +31,6 @@ interface WallApi {
     @GET("{authorId}/wall/{id}")
     suspend fun getWallPostById (@Path("authorId") authorId: Long, @Path("id") id: Long): Response<Post>
 
-    @GET("{authorId}/wall/{id}/latest")
+    @GET("{authorId}/wall/latest")
     suspend fun getLatestWallPosts (@Query("count") count: Int): Response<List<Post>>
 }

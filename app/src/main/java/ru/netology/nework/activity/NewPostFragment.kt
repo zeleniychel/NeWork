@@ -17,11 +17,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentNewPostBinding
+import ru.netology.nework.model.AttachModel
 import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Post
 import ru.netology.nework.util.getParcelableCompat
 import ru.netology.nework.viewmodel.PostsViewModel
-import java.io.InputStream
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -56,11 +56,12 @@ class NewPostFragment : Fragment() {
                     mimeType?.contains("image") == true -> {
                         type = AttachmentType.IMAGE
                     }
-
-                    else -> null
                 }
-                val inputStream: InputStream? = context?.contentResolver?.openInputStream(it)
-                viewModel.setAttach(inputStream, type)
+                val bytes =
+                    context?.contentResolver?.openInputStream(it)?.buffered()?.use { inputStream ->
+                        inputStream.readBytes()
+                    }
+                viewModel.setAttach(AttachModel(bytes, type, it))
             }
         }
 
@@ -101,9 +102,11 @@ class NewPostFragment : Fragment() {
                 binding.audioPreview.visibility = View.VISIBLE
             }
             if (it.type == AttachmentType.IMAGE) {
+                binding.imagePreview.setImageURI(viewModel.attach.value?.uri)
                 binding.imagePreview.visibility = View.VISIBLE
             }
             if (it.type == AttachmentType.VIDEO) {
+                binding.videoPreview.setVideoURI(viewModel.attach.value?.uri)
                 binding.videoPreview.visibility = View.VISIBLE
             }
             binding.remove.visibility = View.VISIBLE
@@ -113,7 +116,7 @@ class NewPostFragment : Fragment() {
         binding.pickPhoto.setOnClickListener {
             ImagePicker.Builder(this)
                 .crop()
-                .galleryOnly()
+                .cameraOnly()
                 .maxResultSize(2048, 2048)
                 .createIntent(photoResultContract::launch)
         }
@@ -127,7 +130,7 @@ class NewPostFragment : Fragment() {
 
         binding.remove.setOnClickListener {
             viewModel.setPhoto(null, null)
-            viewModel.setAttach(null, null)
+            viewModel.setAttach(AttachModel())
             binding.remove.visibility = View.GONE
             binding.imagePreview.visibility = View.GONE
             binding.audioPreview.visibility = View.GONE
@@ -146,11 +149,9 @@ class NewPostFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.save -> {
-                    viewModel.save(binding.editText.text.toString())
-                    findNavController().navigateUp()
+                        viewModel.save(binding.editText.text.toString())
                     true
                 }
-
                 else -> false
             }
         }

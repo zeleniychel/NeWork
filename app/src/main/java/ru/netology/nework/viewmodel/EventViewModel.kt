@@ -8,7 +8,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.netology.nework.model.AttachModel
+import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Event
 import ru.netology.nework.model.EventType
 import ru.netology.nework.model.PhotoModel
@@ -28,6 +31,9 @@ class EventViewModel @Inject constructor(
     private val _photo = MutableLiveData<PhotoModel?>(null)
     val photo: LiveData<PhotoModel?> = _photo
 
+    private val _attach = MutableLiveData<AttachModel?>(null)
+    val attach: LiveData<AttachModel?> = _attach
+
     private var event = MutableLiveData(Event())
 
 //    init {
@@ -37,6 +43,10 @@ class EventViewModel @Inject constructor(
 //    private fun getEvents() = viewModelScope.launch {
 //        _data.value = repository.getEvents()
 //    }
+
+    fun setAttach(attachModel: AttachModel) {
+        _attach.value = attachModel
+    }
     fun save(text: String) {
         val content = text.trim()
         event.value?.let {
@@ -45,11 +55,18 @@ class EventViewModel @Inject constructor(
             }
             event.value = it.copy(content = text)
         }
-        viewModelScope.launch {
-            if (_photo.value == null) {
-                event.value?.let { repository.saveEvent(it) }
+        viewModelScope.launch(Dispatchers.IO) {
+            val attachModel = attach.value
+            val photoModel = photo.value?.file
+            if (attachModel != null) {
+                val url = repository.upload(attachModel)
+                event.value?.let { repository.saveEventWithAttachment(it, url, attach.value?.type!!) }
+            } else if (photoModel != null) {
+                val url = repository.saveMedia(photoModel)
+                event.value?.let { repository.saveEventWithAttachment(it, url, AttachmentType.IMAGE) }
+                photo.value?.file?.let { repository.saveMedia(it) }
             } else {
-                event.value?.let { repository.saveEventWithAttachment(it, _photo.value!!) }
+                event.value?.let { repository.saveEvent(it) }
             }
         }
     }

@@ -17,6 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nework.R
 import ru.netology.nework.auth.AppAuth
 import ru.netology.nework.databinding.FragmentNewEventBinding
+import ru.netology.nework.model.AttachModel
+import ru.netology.nework.model.AttachmentType
 import ru.netology.nework.model.Event
 import ru.netology.nework.model.EventType
 import ru.netology.nework.util.Converter
@@ -36,6 +38,31 @@ class NewEventFragment : Fragment() {
                 val uri = it.data?.data ?: return@registerForActivityResult
                 val file = uri.toFile()
                 viewModel.setPhoto(uri, file)
+            }
+        }
+
+    private val openDocumentContract =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+            if (it != null) {
+                val mimeType = context?.contentResolver?.getType(it)
+                var type: AttachmentType? = null
+                when {
+                    mimeType?.contains("audio") == true -> {
+                        type = AttachmentType.AUDIO
+                    }
+
+                    mimeType?.contains("video") == true -> {
+                        type = AttachmentType.VIDEO
+                    }
+
+                    mimeType?.contains("image") == true -> {
+                        type = AttachmentType.IMAGE
+                    }
+                }
+                val bytes = context?.contentResolver?.openInputStream(it)?.buffered()?.use { inputStream ->
+                    inputStream.readBytes()
+                }
+                viewModel.setAttach(AttachModel(bytes, type,it))
             }
         }
 
@@ -81,25 +108,36 @@ class NewEventFragment : Fragment() {
             binding.imagePreview.visibility = View.VISIBLE
         }
 
+        viewModel.attach.observe(viewLifecycleOwner) {
+            if (it == null) {
+                binding.remove.visibility = View.GONE
+                return@observe
+            }
+            if (it.type == AttachmentType.AUDIO) {
+                binding.audioPreview.visibility = View.VISIBLE
+            }
+            if (it.type == AttachmentType.IMAGE) {
+                binding.imagePreview.setImageURI(viewModel.attach.value?.uri)
+                binding.imagePreview.visibility = View.VISIBLE
+            }
+            if (it.type == AttachmentType.VIDEO) {
+                binding.videoPreview.setVideoURI(viewModel.attach.value?.uri)
+                binding.videoPreview.visibility = View.VISIBLE
+            }
+            binding.remove.visibility = View.VISIBLE
+
+        }
+
         binding.pickPhoto.setOnClickListener {
             ImagePicker.Builder(this)
                 .crop()
-                .galleryOnly()
+                .cameraOnly()
                 .maxResultSize(2048, 2048)
                 .createIntent(photoResultContract::launch)
         }
 
-        binding.editText.setText(eventArg?.content)
-        viewModel.edit(eventArg ?: Event())
-
-        binding.remove.setOnClickListener {
-            viewModel.setPhoto(null, null)
-            binding.remove.visibility = View.GONE
-            binding.imagePreview.visibility = View.GONE
-        }
-
         binding.pickAttachment.setOnClickListener {
-
+            openDocumentContract.launch(arrayOf("image/*", "audio/*", "video/*"))
         }
 
         binding.fabEventDetails.setOnClickListener {
@@ -115,12 +153,14 @@ class NewEventFragment : Fragment() {
             findNavController().navigate(R.id.action_newEventFragment_to_mapFragment)
         }
 
+        binding.editText.setText(eventArg?.content)
+        viewModel.edit(eventArg ?: Event())
+
         toolbar.inflateMenu(R.menu.save_menu)
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.save -> {
                     viewModel.save(binding.editText.text.toString())
-                    findNavController().navigateUp()
                     true
                 }
 

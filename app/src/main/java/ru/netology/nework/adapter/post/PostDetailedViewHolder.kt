@@ -17,6 +17,7 @@ import ru.netology.nework.util.loadAttachment
 class PostDetailedViewHolder(
     private val binding: FragmentPostBinding,
     private val postInteractionListener: PostInteractionListener,
+    private val authId:Long
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(post: Post) {
@@ -34,7 +35,9 @@ class PostDetailedViewHolder(
             published.formattedDate(post.published)
             content.text = post.content
             likesCount.text = post.likeOwnerIds.size.toString()
-            likesCount.isChecked = post.likeByMe
+            if (post.likeOwnerIds.contains(authId)){
+                likesCount.isChecked = true
+            }
             if (post.authorJob != null) {
                 userJob.text = post.authorJob
             }

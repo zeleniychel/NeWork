@@ -5,6 +5,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 import ru.netology.nework.model.Post
 
 interface WallApi {
@@ -22,14 +23,14 @@ interface WallApi {
     suspend fun getNewerWallPosts (@Path("authorId") authorId: Long, @Path("id") id: Long): Response<List<Post>>
 
     @GET("{authorId}/wall/{id}/before")
-    suspend fun getWallPostsBefore (@Path("authorId") authorId: Long, @Path("id") id: Long): Response<List<Post>>
+    suspend fun getWallPostsBefore (@Path("authorId") authorId: Long, @Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
 
     @GET("{authorId}/wall/{id}/after")
-    suspend fun getWallPostsAfter (@Path("authorId") authorId: Long, @Path("id") id: Long): Response<List<Post>>
+    suspend fun getWallPostsAfter (@Path("authorId") authorId: Long, @Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
 
     @GET("{authorId}/wall/{id}")
     suspend fun getWallPostById (@Path("authorId") authorId: Long, @Path("id") id: Long): Response<Post>
 
-    @GET("{authorId}/wall/{id}/latest")
-    suspend fun getLatestWallPosts (@Path("authorId") authorId: Long, @Path("id") id: Long): Response<List<Post>>
+    @GET("{authorId}/wall/latest")
+    suspend fun getLatestWallPosts (@Query("count") count: Int): Response<List<Post>>
 }

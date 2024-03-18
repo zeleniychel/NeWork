@@ -1,5 +1,9 @@
 package ru.netology.nework.repository.wall
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import ru.netology.nework.api.JobsApi
 import ru.netology.nework.api.WallApi
 import ru.netology.nework.error.ApiError
@@ -14,6 +18,13 @@ class WallRepositoryImpl @Inject constructor(
     private val apiWall: WallApi,
     private val apiJob: JobsApi
 ) : WallRepository {
+
+    override var data: Flow<PagingData<Post>> = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        pagingSourceFactory = {
+           WallPagingSource(apiWall, 1)
+        }
+    ).flow
     override suspend fun getWall(authorId:Long): List<Post> {
         try {
             val response = apiWall.getWall(authorId)

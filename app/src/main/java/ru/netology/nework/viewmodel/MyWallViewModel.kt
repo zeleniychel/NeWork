@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import ru.netology.nework.model.Job
 import ru.netology.nework.model.Post
@@ -15,20 +17,19 @@ import javax.inject.Inject
 class MyWallViewModel @Inject constructor(
     private val repository: MyWallRepository,
 ) : ViewModel() {
-    private val _data = MutableLiveData<List<Post>>(emptyList())
-    val data: LiveData<List<Post>> = _data
+    val data: Flow<PagingData<Post>> = repository.data
 
     private val _dataJobs = MutableLiveData<List<Job>>(emptyList())
     val dataJobs: LiveData<List<Job>> = _dataJobs
 
     init {
-        getMyWall()
+//        getMyWall()
         getMyJobs()
     }
 
-    fun getMyWall() = viewModelScope.launch {
-        _data.value = repository.getMyWall()
-    }
+//    fun getMyWall() = viewModelScope.launch {
+//        _data.value = repository.getMyWall()
+//    }
 
     fun likePostById(post: Post) = viewModelScope.launch {
         repository.likeMyPostById(post)

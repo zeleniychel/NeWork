@@ -2,15 +2,15 @@ package ru.netology.nework.adapter.event
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import ru.netology.nework.databinding.CardEventBinding
 import ru.netology.nework.model.Event
 
 class EventAdapter(
     private val eventInteractionListener: EventInteractionListener,
     private val authId: Long?
-) : ListAdapter<Event, EventViewHolder>(EventDiffCallback()) {
+) : PagingDataAdapter<Event, EventViewHolder>(EventDiffCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
@@ -19,7 +19,7 @@ class EventAdapter(
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
-        val event = getItem(position)
+        val event = getItem(position) ?: return
         holder.bind(event)
     }
 }

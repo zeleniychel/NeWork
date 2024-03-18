@@ -5,8 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import ru.netology.nework.model.AttachModel
 import ru.netology.nework.model.AttachmentType
@@ -24,8 +26,7 @@ import javax.inject.Inject
 class EventViewModel @Inject constructor(
     private val repository: EventRepository,
 ) : ViewModel() {
-    private val _data = MutableLiveData<List<Event>>(emptyList())
-    val data: LiveData<List<Event>> = _data
+    val data: Flow<PagingData<Event>> = repository.data
 
     private val _photo = MutableLiveData<PhotoModel?>(null)
     val photo: LiveData<PhotoModel?> = _photo
@@ -35,17 +36,16 @@ class EventViewModel @Inject constructor(
 
     private var event = MutableLiveData(Event())
 
-    init {
-        getEvents()
-    }
-
-    private fun getEvents() = viewModelScope.launch {
-        _data.value = repository.getEvents()
-    }
-
     fun setAttach(attachModel: AttachModel) {
         _attach.value = attachModel
     }
+//    init {
+//        getEvents()
+//    }
+//
+//    private fun getEvents() = viewModelScope.launch {
+//        _data.value = repository.getEvents()
+//    }
     fun save(text: String) {
         val content = text.trim()
         event.value?.let {

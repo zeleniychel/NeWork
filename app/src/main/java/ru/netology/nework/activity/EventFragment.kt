@@ -110,9 +110,9 @@ class EventFragment: Fragment() {
         })
 
         holder.bind(eventArg ?: Event())
-        viewModel.data.observe(viewLifecycleOwner) {
-            holder.bind(it.find { (id) -> id == eventArg?.id } ?: return@observe)
-        }
+//        viewModel.data.observe(viewLifecycleOwner) {
+//            holder.bind(it.find { (id) -> id == eventArg?.id } ?: return@observe)
+//        }
 
         if (appAuth.authStateFlow.value.id == eventArg?.authorId){
             binding.menu.visibility = View.VISIBLE

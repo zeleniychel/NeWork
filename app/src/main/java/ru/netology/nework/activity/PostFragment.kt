@@ -108,12 +108,13 @@ class PostFragment : Fragment() {
             override fun onRemove(post: Post) {
                 viewModel.removePostById(post.id)
             }
-        })
+        }, appAuth.authStateFlow.value.id)
 
         holder.bind(postArg ?: Post())
-        viewModel.data.observe(viewLifecycleOwner) {
-            holder.bind(it.find { (id) -> id == postArg?.id } ?: return@observe)
-        }
+//        viewModel.data.observe(viewLifecycleOwner) {
+//            holder.bind(it.find { (id) -> id == postArg?.id } ?: return@observe)
+//        }
+
         if (appAuth.authStateFlow.value.id == postArg?.authorId){
             binding.menu.visibility = View.VISIBLE
         }

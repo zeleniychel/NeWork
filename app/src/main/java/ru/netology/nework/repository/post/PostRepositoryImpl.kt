@@ -1,5 +1,7 @@
 package ru.netology.nework.repository.post
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -24,6 +26,13 @@ class PostRepositoryImpl @Inject constructor(
     private val api: PostsApi,
     private val mediaApi: MediaApi
 ) : PostRepository {
+    override val data = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        pagingSourceFactory = {
+            PostPagingSource(api)
+        }
+    ).flow
+
     override suspend fun getPosts(): List<Post> {
         try {
             val response = api.getPosts()

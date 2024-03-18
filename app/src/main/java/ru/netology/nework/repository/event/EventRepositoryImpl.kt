@@ -1,5 +1,7 @@
 package ru.netology.nework.repository.event
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -24,6 +26,13 @@ class EventRepositoryImpl @Inject constructor(
     private val api: EventsApi,
     private val mediaApi: MediaApi
 ) : EventRepository {
+
+    override val data = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        pagingSourceFactory = {
+            EventPagingSource(api)
+        }
+    ).flow
     override suspend fun getEvents(): List<Event> {
         try {
             val response = api.getEvents()
